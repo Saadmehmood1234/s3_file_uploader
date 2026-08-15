@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { ApiFile, FilesContextType, StoredFile } from "@/types/file";
 import React, {
   createContext,
@@ -57,8 +57,8 @@ export const FilesProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, [user.name]);
   useEffect(() => {
-    fetchFiles();
-  }, [user.name]);
+    void fetchFiles();
+  }, [fetchFiles]);
 
   return (
     <FilesContext.Provider value={{ files, setFiles, loading, fetchFiles }}>

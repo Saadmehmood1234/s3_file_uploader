@@ -46,9 +46,9 @@ export interface ApiFile {
   original_name: string;
   mime_type: string;
   size: string;
-  status: "pending" | "uploaded" | "failed";
   visibility: "public" | "private";
-  favorite:boolean;
+  favorite: boolean;
+  status: "pending" | "uploaded" | "failed";
   created_at: string;
   updated_at: string;
 }

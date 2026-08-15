@@ -5,22 +5,26 @@ import FileTable from "@/components/FileTable";
 import { useAuth } from "@/context/AuthProvider";
 import { calculateFileSize } from "@/lib/calculateFileSize";
 import { useFiles } from "@/context/FilesProvider";
+import { useState } from "react";
 
 export default function DashboardPage() {
   const { user } = useAuth();
 
   const { files, setFiles } = useFiles();
+  const [currentDate] = useState(() =>
+    new Date().toLocaleDateString("en-GB", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    }),
+  );
 
   const totalSize = files.reduce((total, file) => total + file.size, 0);
 
   return (
     <div className="mx-auto max-w-7xl">
       <PageHeading
-        eyebrow={new Date().toLocaleDateString("en-GB", {
-          day: "numeric",
-          month: "long",
-          year: "numeric",
-        })}
+        eyebrow={currentDate}
         title={`Hello, ${user.name}`}
         description="Here’s what’s happening in your vault today."
       />
