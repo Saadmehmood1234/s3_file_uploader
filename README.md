@@ -215,37 +215,7 @@ Open:
 http://localhost:3000
 ```
 
-## Production Deployment
 
-```text
-User
- │
- ▼
-Vercel
-Next.js Frontend
- │
- │ /api/backend/*
- ▼
-Next.js Rewrite
- │
- ▼
-Express API
-VPS
- │
- ├── PostgreSQL
- │
- └── AWS S3
-```
-
-PM2 can be used to keep the backend running:
-
-```bash
-npm run build
-
-pm2 start dist/server.js --name file-storage-backend
-
-pm2 save
-```
 
 ## Future Improvements
 Some features that can be added in the future:
