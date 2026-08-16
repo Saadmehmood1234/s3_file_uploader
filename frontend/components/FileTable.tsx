@@ -187,24 +187,21 @@ const FileTable = ({
 
     const menuHeight = 100;
     const gap = 6;
+    const viewportPadding = 12;
 
-    const spaceBelow = window.innerHeight - rect.bottom;
+    let top = rect.bottom + gap;
 
-    if (spaceBelow < menuHeight) {
-      // Open upward
-      setMenu({
-        id,
-        bottom: window.innerHeight - rect.top + gap,
-        right: window.innerWidth - rect.right,
-      });
-    } else {
-      // Open downward
-      setMenu({
-        id,
-        top: rect.bottom + gap,
-        right: window.innerWidth - rect.right,
-      });
+    const maxTop = window.innerHeight - menuHeight - viewportPadding;
+
+    if (top > maxTop) {
+      top = maxTop;
     }
+
+    setMenu({
+      id,
+      top,
+      right: window.innerWidth - rect.right,
+    });
   };
   return (
     <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm shadow-sky-200/40">
