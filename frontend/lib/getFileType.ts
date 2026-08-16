@@ -1,4 +1,3 @@
-
 import { StoredFileType } from "@/types/file";
 
 export const getFileType = (mimeType: string): StoredFileType => {
@@ -9,8 +8,7 @@ export const getFileType = (mimeType: string): StoredFileType => {
     "application/x-zip-compressed": "ZIP",
     "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
       "DOCX",
-    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
-      "XLSX",
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": "XLSX",
     "image/jpeg": "JPEG",
     "image/png": "PNG",
     "image/webp": "WEBP",
@@ -19,7 +17,7 @@ export const getFileType = (mimeType: string): StoredFileType => {
     "audio/wav": "WAV",
     "audio/ogg": "OGG",
     "audio/mp4": "M4A",
-
+    "text/csv": "CSV",
     "video/mp4": "MP4",
     "video/webm": "WEBM",
     "video/quicktime": "MOV",

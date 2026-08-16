@@ -9,6 +9,7 @@ export type FileVisibility = "public" | "private";
 export type StoredFileType =
   | "PDF"
   | "TXT"
+  | "CSV"
   | "XLSX"
   | "DOCX"
   | "ZIP"

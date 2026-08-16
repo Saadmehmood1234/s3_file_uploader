@@ -20,6 +20,7 @@ export const FilePreviewContent = ({
   const isAudio = ["MP3", "WAV", "OGG", "M4A"].includes(type);
   const isZip = type === "ZIP";
   const isPDF = type === "PDF";
+  const isCSV = type === "CSV";
   const isText = type === "TXT";
 
   if (isImage) {
@@ -54,6 +55,9 @@ export const FilePreviewContent = ({
     return (
       <iframe src={url} title={name} className="h-[70vh] w-full border-0" />
     );
+  }
+  if (isCSV) {
+    return <CSVPreview url={url} />;
   }
 
   if (isText) {
@@ -117,5 +121,117 @@ const TextPreview = ({ url }: { url: string }) => {
     <pre className="max-h-[70vh] w-full overflow-auto whitespace-pre-wrap p-6 text-sm text-slate-700">
       {content}
     </pre>
+  );
+};
+
+
+const CSVPreview = ({ url }: { url: string }) => {
+  const [rows, setRows] = useState<string[][]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const loadCSV = async () => {
+      try {
+        setLoading(true);
+        setError("");
+
+        const response = await fetch(url);
+
+        if (!response.ok) {
+          throw new Error("Failed to load CSV");
+        }
+
+        const text = await response.text();
+
+        const parsedRows = text
+          .trim()
+          .split(/\r?\n/)
+          .map((row) =>
+            row.split(",").map((cell) => cell.trim()),
+          );
+
+        setRows(parsedRows);
+      } catch {
+        setError("Unable to preview CSV file.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    void loadCSV();
+  }, [url]);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-16">
+        <Loader2
+          className="animate-spin text-indigo-600"
+          size={28}
+        />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="px-6 py-16 text-center text-slate-500">
+        <FileText size={40} className="mx-auto mb-3" />
+
+        <p className="font-medium">CSV preview unavailable</p>
+
+        <p className="mt-1 text-sm text-slate-400">
+          {error}
+        </p>
+      </div>
+    );
+  }
+
+  if (rows.length === 0) {
+    return (
+      <div className="px-6 py-16 text-center text-slate-500">
+        <FileText size={40} className="mx-auto mb-3" />
+        <p className="font-medium">CSV file is empty</p>
+      </div>
+    );
+  }
+
+  const [headers, ...data] = rows;
+
+  return (
+    <div className="max-h-[70vh] w-full overflow-auto">
+      <table className="min-w-full border-collapse text-left text-sm">
+        <thead className="sticky top-0 z-10 bg-slate-100">
+          <tr>
+            {headers.map((header, index) => (
+              <th
+                key={index}
+                className="whitespace-nowrap border-b border-r border-slate-200 px-4 py-3 font-semibold text-slate-700"
+              >
+                {header}
+              </th>
+            ))}
+          </tr>
+        </thead>
+
+        <tbody>
+          {data.map((row, rowIndex) => (
+            <tr
+              key={rowIndex}
+              className="transition hover:bg-slate-50"
+            >
+              {headers.map((_, columnIndex) => (
+                <td
+                  key={columnIndex}
+                  className="whitespace-nowrap border-b border-r border-slate-100 px-4 py-3 text-slate-600"
+                >
+                  {row[columnIndex] || "—"}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 };
