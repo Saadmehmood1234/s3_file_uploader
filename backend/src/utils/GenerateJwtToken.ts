@@ -14,5 +14,6 @@ export const generateJwtToken = async (userId: string, res: Response) => {
     maxAge: 10 * 24 * 60 * 60 * 1000,
     path: "/",
   });
+  console.log(token)
   return token;
 };
