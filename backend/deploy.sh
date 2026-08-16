@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e  # Stop the script if any command fails
+set -e
 
 echo "Pulling latest code..."
 git pull origin main
@@ -8,8 +8,13 @@ git pull origin main
 echo "Installing dependencies..."
 npm ci
 
+echo "Removing old build..."
+rm -rf dist
+
 echo "Building application..."
 npm run build
 
 echo "Restarting PM2..."
-npx pm2 restart file-storage-backend --update-env
+pm2 restart file-storage-backend --update-env
+
+echo "Deployment complete."
