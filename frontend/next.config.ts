@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const backendUrl = process.env.BACKEND_URL;
-
+console.log()
 if (!backendUrl) {
   throw new Error("BACKEND_URL environment variable is not defined");
 }
