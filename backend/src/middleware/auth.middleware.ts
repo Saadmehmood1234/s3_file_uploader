@@ -21,13 +21,15 @@ export const protect = asyncHandler(
       err.statusCode = 401;
       throw err;
     }
+    console.log("Got the token",token)
     try {
       const decode = jwt.verify(token, env.JWT_SECRET) as AuthJwtPayload;
-      console.log("check", decode);
+      console.log("check the decode", decode);
       req.userId = decode.userId;
 
       next();
     } catch {
+      console.log("Failed to decode")
       const err: any = new Error("Invalid or expired token");
       err.statusCode = 401;
       throw err;
