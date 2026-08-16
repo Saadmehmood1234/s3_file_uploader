@@ -13,7 +13,7 @@ export interface NavItem {
 
 export const NAVIGATION: NavItem[] = [
   {
-    label: "Overvue",
+    label: "Dashboard",
     path: "/dashboard",
     icon: LayoutDashboard,
   },
