@@ -86,7 +86,7 @@ function Stat({
       ? "bg-sky-50 text-sky-600"
       : accent === "emerald"
         ? "bg-emerald-50 text-emerald-600"
-        : "bg-indigo-50 text-indigo-600";
+        : "bg-[#215c45]/10 text-[#215c45]";
   return (
     <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
       <div className={`mb-5 inline-flex rounded-xl p-2.5 ${cls}`}>{icon}</div>

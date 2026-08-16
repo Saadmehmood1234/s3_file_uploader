@@ -35,7 +35,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
             />
 
             <input
-              className="w-full rounded-xl bg-slate-100 py-2.5 pl-10 pr-4 text-sm outline-none ring-indigo-500 focus:ring-2"
+              className="w-full rounded-xl bg-slate-100 py-2.5 pl-10 pr-4 text-sm outline-none ring-[#215c45] focus:ring-2"
               placeholder="Search anything…"
             />
           </div>
@@ -57,7 +57,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
             <button
               type="button"
               onClick={() => setUpload(true)}
-              className="flex h-10 items-center gap-2 rounded-full bg-indigo-600 px-3.5 text-sm font-semibold text-white shadow-md shadow-indigo-600/15 hover:bg-indigo-500"
+              className="flex h-10 items-center gap-2 rounded-full bg-[#215c45] px-3.5 text-sm font-semibold text-white shadow-md shadow-[#215c45]/15 hover:bg-[#215c45]/90"
             >
               <Upload size={18} />
               <span className="hidden sm:inline">Upload Files</span>

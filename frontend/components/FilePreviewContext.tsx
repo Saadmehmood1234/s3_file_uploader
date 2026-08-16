@@ -114,7 +114,7 @@ const TextPreview = ({ url }: { url: string }) => {
   }, [url]);
 
   if (loading) {
-    return <Loader2 className="animate-spin text-indigo-600" size={28} />;
+    return <Loader2 className="animate-spin text-[#215c45]" size={28} />;
   }
 
   return (
@@ -166,7 +166,7 @@ const CSVPreview = ({ url }: { url: string }) => {
     return (
       <div className="flex items-center justify-center py-16">
         <Loader2
-          className="animate-spin text-indigo-600"
+          className="animate-spin text-[#215c45]"
           size={28}
         />
       </div>

@@ -136,10 +136,10 @@ export const UploadModal = ({
               input.current?.click();
             }
           }}
-          className={`mt-6 rounded-2xl border-2 border-dashed border-indigo-200 bg-indigo-50/50 px-6 py-10 text-center transition ${
+          className={`mt-6 rounded-2xl border-2 border-dashed border-[#215c45]/20 bg-[#215c45]/5 px-6 py-10 text-center transition ${
             uploading
               ? "cursor-not-allowed opacity-60"
-              : "cursor-pointer hover:border-indigo-400 hover:bg-indigo-50"
+              : "cursor-pointer hover:border-[#215c45]/20 hover:bg-[#215c45]/5"
           }`}
         >
           <input
@@ -150,12 +150,12 @@ export const UploadModal = ({
             onChange={(e) => handleFileChange(e.target.files)}
           />
 
-          <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-indigo-600 shadow-sm">
+          <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-[#215c45] shadow-sm">
             <UploadCloud size={27} />
           </span>
 
           <p className="mt-4 font-semibold text-slate-800">
-            Drop a file here, or <span className="text-indigo-600">browse</span>
+            Drop a file here, or <span className="text-[#215c45]">browse</span>
           </p>
 
           <p className="mt-1 text-xs text-slate-400">
@@ -166,7 +166,7 @@ export const UploadModal = ({
         {file && (
           <div className="mt-5 rounded-2xl border border-slate-200 p-4">
             <div className="flex items-start gap-3">
-              <span className="rounded-xl bg-indigo-50 p-2 text-indigo-600">
+              <span className="rounded-xl bg-[#215c45]/5 p-2 text-[#215c45]">
                 <FileUp size={28} />
               </span>
 
@@ -183,7 +183,7 @@ export const UploadModal = ({
                   </div>
 
                   {uploading && (
-                    <span className="text-xs font-medium text-indigo-600">
+                    <span className="text-xs font-medium text-[#215c45]">
                       {progress}%
                     </span>
                   )}
@@ -194,7 +194,7 @@ export const UploadModal = ({
                     style={{
                       width: `${progress}%`,
                     }}
-                    className="h-full rounded-full bg-indigo-600 transition-all"
+                    className="h-full rounded-full bg-[#215c45] transition-all"
                   />
                 </div>
 

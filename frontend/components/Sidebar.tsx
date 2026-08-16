@@ -36,7 +36,7 @@ export const Sidebar = ({ onOpenUpload }: { onOpenUpload: () => void }) => {
             href={path}
             key={path}
             onClick={() => setOpen(false)}
-            className={`flex items-center gap-3 rouned-xl px-3 py-2.5 text-sm font-medium transition ${path === pathname ? "bg-indigo-50 text-indigo-700" : "text-slate-500 hover:bg-slate-50 hover:text-slate-900"}`}
+            className={`flex items-center gap-3 rouned-xl px-3 py-2.5 text-sm font-medium transition ${path === pathname ? "bg-[#215c45]/5 text-[#215c45]" : "text-slate-500 hover:bg-slate-50 hover:text-slate-900"}`}
           >
             <Icon size={19} />
             {label}
@@ -46,14 +46,14 @@ export const Sidebar = ({ onOpenUpload }: { onOpenUpload: () => void }) => {
       <div className="flex-col gap-4">
         <button
           onClick={onOpenUpload}
-          className="w-full mb-2 rounded-full items-center flex-inline justify-center hover:bg-[#615FFF]/10 border border-[#615FFF] side-link disabled:cursor-not-allowed disabled:opacity-60"
+          className="w-full mb-2 rounded-full items-center flex-inline justify-center hover:bg-[#215c45]/10 border border-[#215c45] side-link disabled:cursor-not-allowed disabled:opacity-60"
         >
           <Plus size={24} />
           Upload
         </button>
         <button
           type="button"
-          className="w-full rounded-full items-center border border-slate-300 flex-inline justify-center hover:bg-[#615FFF]/80 side-link bg-[#615FFF] text-white disabled:cursor-not-allowed disabled:opacity-60"
+          className="w-full rounded-full items-center border border-slate-300 flex-inline justify-center hover:bg-[#215c45]/80 side-link bg-[#215c45] text-white disabled:cursor-not-allowed disabled:opacity-60"
           onClick={handleLogout}
           disabled={loading}
         >

@@ -13,7 +13,7 @@ export function PageHeading({
     <div className="mb-7 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
       <div>
         {eyebrow && (
-          <p className="mb-2 text-xs font-bold uppercase tracking-[.17em] text-indigo-600">
+          <p className="mb-2 text-xs font-bold uppercase tracking-[.17em] text-[#215c45]">
             {eyebrow}
           </p>
         )}

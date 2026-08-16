@@ -10,11 +10,11 @@ export default function NotFound() {
       <header className="mx-auto flex w-full max-w-7xl items-center px-5 py-6 sm:px-8">
         <Logo />
       </header>
-      <div className="pointer-events-none absolute left-1/2 top-1/2 h-96 w-96 -translate-x-1/2 -translate-y-1/2 rounded-full bg-indigo-200/30 blur-3xl" />
+      <div className="pointer-events-none absolute left-1/2 top-1/2 h-96 w-96 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#215c45]/10 blur-3xl" />
 
       <section className="relative z-10 flex flex-1 items-center justify-center px-5 pb-20">
         <div className="w-full max-w-xl text-center">
-          <p className="mt-8 text-sm font-bold uppercase tracking-[0.2em] text-indigo-600">
+          <p className="mt-8 text-sm font-bold uppercase tracking-[0.2em] text-[#215c45]">
             Error 404
           </p>
 
@@ -29,10 +29,10 @@ export default function NotFound() {
           <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
             <Link
               href="/dashboard"
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-indigo-600 px-5 py-3 font-semibold text-white shadow-lg shadow-indigo-600/20 transition hover:bg-indigo-500"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-[#215c45] px-5 py-3 font-semibold text-white shadow-lg shadow-[#215c45]/20 transition hover:bg-[#215c45]"
             >
               <Home size={18} />
-              Go to Vaultly
+              Go to FileKeeper
             </Link>
           </div>
         </div>

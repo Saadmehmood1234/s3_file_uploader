@@ -65,7 +65,7 @@ const PublicFiles = () => {
         <div className="flex flex-col items-center gap-3 text-slate-500">
           <Loader2
             size={32}
-            className="animate-spin text-indigo-600"
+            className="animate-spin text-[#215c45]"
           />
           <p className="text-sm">Loading shared file...</p>
         </div>

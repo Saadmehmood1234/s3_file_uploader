@@ -2,223 +2,389 @@ import Link from "next/link";
 import {
   ArrowRight,
   Check,
+  Clock3,
   CloudUpload,
   FileCheck2,
+  FolderLock,
+  Link2,
   LockKeyhole,
   ShieldCheck,
-  Sparkles,
 } from "lucide-react";
 import { Logo } from "./Logo";
 
 const features = [
   {
-    icon: ShieldCheck,
-    title: "Private by default",
-    copy: "Every file stays private until you choose to share it.",
+    icon: CloudUpload,
+    title: "Upload without the friction",
+    copy: "Upload one or many files with clear progress, useful errors, and direct cloud storage.",
   },
   {
-    icon: CloudUpload,
-    title: "Effortless uploads",
-    copy: "Drag, drop, and keep moving while uploads finish in the background.",
+    icon: FolderLock,
+    title: "Private until you say otherwise",
+    copy: "New files stay private by default. You choose exactly what becomes shareable.",
   },
   {
     icon: FileCheck2,
-    title: "Always organized",
-    copy: "Search, filter, favorite, and find any file in seconds.",
+    title: "Find files without digging",
+    copy: "Search, filter, favorite, and sort your files from one clean workspace.",
+  },
+];
+
+const securityItems = [
+  {
+    icon: LockKeyhole,
+    title: "HTTP-only authentication",
+    copy: "Authentication cookies stay inaccessible to client-side JavaScript.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Private by default",
+    copy: "A file is not public unless you explicitly change its visibility.",
+  },
+  {
+    icon: Link2,
+    title: "Controlled sharing",
+    copy: "Public access is exposed only through files you intentionally share.",
+  },
+  {
+    icon: Clock3,
+    title: "Temporary storage access",
+    copy: "Signed storage URLs expire automatically instead of remaining permanent.",
   },
 ];
 
 export default function LandingPage() {
   return (
-    <main className="min-h-screen overflow-hidden bg-[#f8f9fc] text-slate-950">
-      <header className="mx-auto flex max-w-7xl items-center justify-between px-5 py-6 lg:px-8">
-        <Logo />
-        <nav className="hidden items-center gap-8 text-sm font-medium text-slate-600 md:flex">
-          <a href="#features" className="hover:text-slate-950">
-            Features
-          </a>
-          <a href="#security" className="hover:text-slate-950">
-            Security
-          </a>
-          <a href="#pricing" className="hover:text-slate-950">
-            Pricing
-          </a>
-        </nav>
-        <div className="flex items-center gap-2">
-          <Link
-            href="/login"
-            className="rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-white"
-          >
-            Log in
-          </Link>
-          <Link
-            href="/signup"
-            className="rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-indigo-600/20 hover:bg-indigo-500"
-          >
-            Start free
-          </Link>
+    <main className="min-h-screen bg-[#f7f7f4] text-[#17211b]">
+      <header className="border-b border-[#dfe3dc] bg-[#f7f7f4]/95 backdrop-blur">
+        <div className="mx-auto flex h-18 max-w-7xl items-center justify-between px-5 lg:px-8">
+          <Logo />
+
+          <nav className="hidden items-center gap-7 text-sm font-medium text-[#667069] md:flex">
+            <a
+              href="#features"
+              className="transition-colors hover:text-[#17211b]"
+            >
+              Features
+            </a>
+            <a
+              href="#security"
+              className="transition-colors hover:text-[#17211b]"
+            >
+              Security
+            </a>
+            <a href="#about" className="transition-colors hover:text-[#17211b]">
+              About
+            </a>
+          </nav>
+
+          <div className="flex items-center gap-2">
+            <Link
+              href="/login"
+              className="hidden rounded-lg px-3.5 py-2.5 text-sm font-semibold text-[#4d5851] transition hover:bg-[#eceee9] sm:inline-flex"
+            >
+              Log in
+            </Link>
+            <Link
+              href="/signup"
+              className="inline-flex items-center rounded-lg bg-[#215c45] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#184a37]"
+            >
+              Create account
+            </Link>
+          </div>
         </div>
       </header>
 
-      <section className="relative mx-auto grid max-w-7xl items-center gap-14 px-5 pb-24 pt-16 lg:grid-cols-[1.02fr_.98fr] lg:px-8 lg:pb-32 lg:pt-24">
-        <div className="relative z-10">
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-indigo-100 bg-white px-3.5 py-2 text-xs font-semibold text-indigo-700 shadow-sm">
-            <Sparkles size={14} /> Secure storage, beautifully simple
+      <section className="overflow-hidden border-b border-[#dfe3dc]">
+        <div className="mx-auto grid max-w-7xl gap-14 px-5 py-16 sm:py-20 lg:grid-cols-[0.85fr_1.15fr] lg:items-center lg:px-8 lg:py-24">
+          <div className="max-w-xl">
+            <p className="mb-5 text-sm font-semibold text-[#215c45]">
+              Secure file storage, minus the clutter
+            </p>
+
+            <h1 className="text-4xl font-semibold leading-[1.03] tracking-[-0.045em] text-[#17211b] sm:text-6xl lg:text-6xl">
+              Manage files, and organized.
+              <span className="lg:text-5xl mt-2 block text-[#68736b]">
+                Your data, protected.
+              </span>
+            </h1>
+
+            <p className="mt-7 max-w-lg text-base leading-7 text-[#667069] sm:text-lg sm:leading-8">
+              FileKeeper gives you one straightforward place to upload,
+              organize, preview, and share files while keeping everything
+              private by default.
+            </p>
+
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <Link
+                href="/signup"
+                className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#215c45] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#184a37]"
+              >
+                Start for free
+                <ArrowRight size={17} />
+              </Link>
+              <Link
+                href="/dashboard"
+                className="inline-flex items-center justify-center rounded-lg border border-[#cfd5cd] bg-white px-5 py-3 text-sm font-semibold text-[#26312a] transition hover:bg-[#f0f2ed]"
+              >
+                Open demo
+              </Link>
+            </div>
+
+            <div className="mt-7 flex flex-wrap gap-x-5 gap-y-2 text-sm text-[#6f7972]">
+              {["2 GB free", "No credit card", "Private by default"].map(
+                (item) => (
+                  <span key={item} className="inline-flex items-center gap-1.5">
+                    <Check size={15} className="text-[#215c45]" />
+                    {item}
+                  </span>
+                ),
+              )}
+            </div>
           </div>
-          <h1 className="max-w-3xl text-5xl font-semibold leading-[1.04] tracking-tighter sm:text-6xl lg:text-7xl">
-            Your files.
-            <br />
-            <span className="text-indigo-600">Securely yours.</span>
-          </h1>
-          <p className="mt-7 max-w-xl text-lg leading-8 text-slate-600">
-            Store, organize, and share your most important files with privacy
-            that never gets in your way.
-          </p>
-          <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-            <Link
-              href="/signup"
-              className="inline-flex items-center justify-center gap-2 rounded-2xl bg-indigo-600 px-6 py-3.5 font-semibold text-white shadow-xl shadow-indigo-600/20 hover:bg-indigo-500"
-            >
-              Create your vault <ArrowRight size={18} />
-            </Link>
-            <Link
-              href="/dashboard"
-              className="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white px-6 py-3.5 font-semibold text-slate-700 shadow-sm hover:border-slate-300"
-            >
-              View demo
-            </Link>
-          </div>
-          <div className="mt-7 flex flex-wrap gap-x-5 gap-y-2 text-sm text-slate-500">
-            <span className="flex items-center gap-1.5">
-              <Check size={15} className="text-emerald-500" /> 2 GB free
-            </span>
-            <span className="flex items-center gap-1.5">
-              <Check size={15} className="text-emerald-500" /> No credit card
-            </span>
-            <span className="flex items-center gap-1.5">
-              <Check size={15} className="text-emerald-500" /> Cancel anytime
-            </span>
+
+          <div className="relative lg:pl-4">
+            <div className="rounded-[22px] border border-[#ccd2ca] bg-[#e9ece6] p-2 shadow-[0_24px_70px_rgba(37,52,43,0.14)]">
+              <div className="overflow-hidden rounded-2xl border border-[#d5dad3] bg-white">
+                <div className="flex items-center gap-1.5 border-b border-[#e5e8e2] px-4 py-3">
+                  <span className="h-2.5 w-2.5 rounded-full bg-[#d9ddd7]" />
+                  <span className="h-2.5 w-2.5 rounded-full bg-[#d9ddd7]" />
+                  <span className="h-2.5 w-2.5 rounded-full bg-[#d9ddd7]" />
+                  <span className="ml-3 text-[11px] font-medium text-[#929a94]">
+                    app.filekeeper
+                  </span>
+                </div>
+                <img
+                  src="/background.png"
+                  alt="FileKeeper dashboard showing stored files"
+                  className="block w-full"
+                />
+              </div>
+            </div>
+
+            <div className="absolute -bottom-5 left-0 hidden rounded-xl border border-[#d6dbd3] bg-white px-4 py-3 shadow-lg lg:block">
+              <div className="flex items-center gap-3">
+                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#e6f0ea] text-[#215c45]">
+                  <ShieldCheck size={18} />
+                </div>
+                <div>
+                  <p className="text-xs font-semibold text-[#26312a]">
+                    Private by default
+                  </p>
+                  <p className="mt-0.5 text-[11px] text-[#7b847e]">
+                    You control what gets shared
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <HeroVisual />
+      </section>
+
+      <section id="features" className="bg-white py-20 sm:py-24">
+        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+          <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
+            <div className="max-w-md">
+              <p className="text-sm font-semibold text-[#215c45]">
+                Built for everyday use
+              </p>
+              <h2 className="mt-4 text-3xl font-semibold tracking-[-0.035em] text-[#17211b] sm:text-4xl">
+                File management without a learning curve.
+              </h2>
+              <p className="mt-5 text-base leading-7 text-[#6a746d]">
+                The important actions stay obvious. The rest stays out of your
+                way.
+              </p>
+            </div>
+
+            <div className="border-t border-[#dde2da]">
+              {features.map(({ icon: Icon, title, copy }, index) => (
+                <div
+                  key={title}
+                  className="grid gap-4 border-b border-[#dde2da] py-7 sm:grid-cols-[52px_1fr] sm:gap-6"
+                >
+                  <div className="flex items-start justify-between sm:block">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#edf2ee] text-[#215c45]">
+                      <Icon size={19} />
+                    </div>
+                    <span className="text-xs font-medium text-[#a1a8a2] sm:hidden">
+                      0{index + 1}
+                    </span>
+                  </div>
+
+                  <div className="grid gap-2 sm:grid-cols-[1fr_1.2fr] sm:gap-8">
+                    <h3 className="font-semibold text-[#273129]">{title}</h3>
+                    <p className="text-sm leading-6 text-[#6c756f] sm:text-base">
+                      {copy}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </section>
 
       <section
-        id="features"
-        className="border-y border-slate-200/80 bg-white py-24"
+        id="about"
+        className="border-y border-[#dfe3dc] bg-[#eef0eb] py-16 sm:py-20"
       >
-        <div className="mx-auto max-w-7xl px-5 lg:px-8">
-          <div className="max-w-2xl">
-            <p className="text-sm font-bold uppercase tracking-[.18em] text-indigo-600">
-              Built for clarity
+        <div className="mx-auto grid max-w-7xl gap-10 px-5 lg:grid-cols-3 lg:px-8">
+          <div>
+            <p className="text-sm font-semibold text-[#215c45]">
+              Designed around one principle
             </p>
-            <h2 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">
-              Everything you need. Nothing you don’t.
+            <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em] text-[#17211b]">
+              You stay in control.
             </h2>
           </div>
-          <div className="mt-12 grid gap-5 md:grid-cols-3">
-            {features.map(({ icon: Icon, title, copy }) => (
-              <div
-                key={title}
-                className="rounded-3xl border border-slate-200 bg-[#fafbfe] p-7"
+
+          <p className="text-base leading-7 text-[#626d65] lg:col-span-2 lg:max-w-2xl">
+            FileKeeper is intentionally simple: your files start private,
+            sharing is deliberate, and the interface focuses on the actions you
+            actually use—upload, find, preview, organize, and share.
+          </p>
+        </div>
+      </section>
+
+      <section id="security" className="bg-[#17251e] py-20 text-white sm:py-24">
+        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+          <div className="grid gap-12 lg:grid-cols-[0.75fr_1.25fr] lg:gap-20">
+            <div className="max-w-md">
+              <p className="text-sm font-semibold text-[#91c5aa]">Security</p>
+              <h2 className="mt-4 text-3xl font-semibold tracking-[-0.035em] sm:text-4xl">
+                Sensible protection, built into the product.
+              </h2>
+              <p className="mt-5 text-base leading-7 text-[#b5c1b9]">
+                Security should not depend on you remembering to turn it on.
+                FileKeeper starts from restricted access and lets you open
+                things up intentionally.
+              </p>
+
+              <Link
+                href="/signup"
+                className="mt-7 inline-flex items-center gap-2 rounded-lg bg-[#f1f4ef] px-5 py-3 text-sm font-semibold text-[#17251e] transition hover:bg-white"
               >
-                <div className="mb-5 inline-flex rounded-2xl bg-indigo-50 p-3 text-indigo-600">
-                  <Icon size={24} />
+                Create your account
+                <ArrowRight size={17} />
+              </Link>
+            </div>
+
+            <div className="grid border-t border-white/15 sm:grid-cols-2">
+              {securityItems.map(({ icon: Icon, title, copy }, index) => (
+                <div
+                  key={title}
+                  className={`border-b border-white/15 py-7 sm:p-7 ${
+                    index % 2 === 0 ? "sm:border-r" : ""
+                  }`}
+                >
+                  <Icon size={20} className="text-[#91c5aa]" />
+                  <h3 className="mt-5 font-semibold text-white">{title}</h3>
+                  <p className="mt-2 text-sm leading-6 text-[#aebbb2]">
+                    {copy}
+                  </p>
                 </div>
-                <h3 className="text-lg font-semibold">{title}</h3>
-                <p className="mt-2 leading-7 text-slate-600">{copy}</p>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </section>
-      <section id="security" className="mx-auto max-w-7xl px-5 py-24 lg:px-8">
-        <div className="rounded-4xl bg-slate-950 px-7 py-12 text-white sm:px-12 lg:flex lg:items-center lg:justify-between">
-          <div className="max-w-2xl">
-            <LockKeyhole className="mb-5 text-indigo-400" size={34} />
-            <h2 className="text-3xl font-semibold tracking-tight">
-              Security is part of the architecture.
-            </h2>
-            <p className="mt-4 text-lg leading-8 text-slate-400">
-              HTTP-only cookie authentication, private-by-default visibility,
-              and time-limited sharing help keep access in your control.
+
+      <section className="bg-[#f7f7f4] py-18 sm:py-20">
+        <div className="mx-auto flex max-w-5xl flex-col items-start justify-between gap-8 px-5 sm:flex-row sm:items-end lg:px-8">
+          <div>
+            <p className="text-sm font-semibold text-[#215c45]">
+              Ready when you are
             </p>
+            <h2 className="mt-3 max-w-2xl text-3xl font-semibold tracking-[-0.035em] text-[#17211b] sm:text-4xl">
+              Put your files somewhere you can actually find them again.
+            </h2>
           </div>
           <Link
             href="/signup"
-            className="mt-8 inline-flex items-center gap-2 rounded-2xl bg-white px-5 py-3 font-semibold text-slate-950 lg:mt-0"
+            className="inline-flex shrink-0 items-center gap-2 rounded-lg bg-[#215c45] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#184a37]"
           >
-            Get started <ArrowRight size={18} />
+            Get started free
+            <ArrowRight size={17} />
           </Link>
         </div>
       </section>
-      <footer id="pricing" className="border-t border-slate-200 py-8">
-        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-5 text-sm text-slate-500 sm:flex-row lg:px-8">
-          <Logo compact />
-          <p>© 2026 Vaultly. Built for private work.</p>
+
+      <footer className="border-t border-[#dfe3dc] bg-white">
+        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+          <div className="grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1fr_1fr]">
+            <div className="max-w-sm">
+              <Logo />
+              <p className="mt-4 text-sm leading-6 text-[#6d766f]">
+                Simple, secure file storage for keeping your work organized and
+                under your control.
+              </p>
+            </div>
+
+            <FooterGroup
+              title="Product"
+              links={[
+                ["Features", "#features"],
+                ["Security", "#security"],
+                ["Dashboard", "/dashboard"],
+              ]}
+            />
+            <FooterGroup
+              title="Account"
+              links={[
+                ["Log in", "/login"],
+                ["Create account", "/signup"],
+              ]}
+            />
+            <FooterGroup
+              title="Resources"
+              links={[
+                ["Privacy", "#security"],
+                ["Contact", "mailto:support@filekeeper.com"],
+              ]}
+            />
+          </div>
+
+          <div className="flex flex-col gap-3 border-t border-[#e3e6e1] py-5 text-xs text-[#879088] sm:flex-row sm:items-center sm:justify-between">
+            <p>© {new Date().getFullYear()} FileKeeper. All rights reserved.</p>
+            <p>Built for secure file storage.</p>
+          </div>
         </div>
       </footer>
     </main>
   );
 }
 
-function HeroVisual() {
+function FooterGroup({
+  title,
+  links,
+}: {
+  title: string;
+  links: [string, string][];
+}) {
   return (
-    <div className="relative mx-auto w-full max-w-xl">
-      <div className="absolute -inset-10 -z-10 rounded-full bg-indigo-200/40 blur-3xl" />
-      <div className="rotate-[1.5deg] rounded-4xl border border-white/70 bg-white/80 p-4 shadow-2xl shadow-indigo-950/15 backdrop-blur-xl">
-        <div className="rounded-[1.4rem] bg-slate-950 p-5 text-white">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-xs text-slate-400">Vault storage</p>
-              <p className="mt-1 text-2xl font-semibold">
-                18.4 GB{" "}
-                <span className="text-sm font-normal text-slate-500">
-                  of 100 GB
-                </span>
-              </p>
-            </div>
-            <div className="rounded-2xl bg-indigo-500/20 p-3 text-indigo-300">
-              <CloudUpload />
-            </div>
-          </div>
-          <div className="mt-5 h-2 overflow-hidden rounded-full bg-slate-800">
-            <div className="h-full w-[36%] rounded-full bg-linear-to-r from-indigo-500 to-violet-400" />
-          </div>
-        </div>
-        <div className="grid grid-cols-2 gap-3 p-3 sm:grid-cols-3">
-          {[
-            ["Q3 Product plan", "PDF", "2.8 MB"],
-            ["Brand assets", "ZIP", "14.6 MB"],
-            ["Team offsite", "JPG", "5.2 MB"],
-          ].map(([name, type, size], i) => (
-            <div
-              key={name}
-              className={`rounded-2xl border border-slate-100 p-4 ${i === 2 ? "hidden sm:block" : ""}`}
+    <div>
+      <p className="text-sm font-semibold text-[#26312a]">{title}</p>
+      <div className="mt-4 flex flex-col gap-3 text-sm text-[#737d75]">
+        {links.map(([label, href]) =>
+          href.startsWith("/") ? (
+            <Link
+              key={label}
+              href={href}
+              className="transition-colors hover:text-[#215c45]"
             >
-              <div
-                className={`mb-7 flex h-10 w-10 items-center justify-center rounded-xl text-xs font-bold ${i === 0 ? "bg-rose-50 text-rose-500" : i === 1 ? "bg-amber-50 text-amber-600" : "bg-sky-50 text-sky-600"}`}
-              >
-                {type}
-              </div>
-              <p className="truncate text-sm font-semibold text-slate-800">
-                {name}
-              </p>
-              <p className="mt-1 text-xs text-slate-400">{size}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-      <div className="absolute -bottom-7 -left-5 flex items-center gap-3 rounded-2xl border border-white bg-white p-3 pr-5 shadow-xl">
-        <div className="rounded-xl bg-emerald-50 p-2 text-emerald-600">
-          <ShieldCheck size={21} />
-        </div>
-        <div>
-          <p className="text-xs font-semibold text-slate-800">
-            Upload complete
-          </p>
-          <p className="text-[11px] text-slate-400">Encrypted and secured</p>
-        </div>
+              {label}
+            </Link>
+          ) : (
+            <a
+              key={label}
+              href={href}
+              className="transition-colors hover:text-[#215c45]"
+            >
+              {label}
+            </a>
+          ),
+        )}
       </div>
     </div>
   );

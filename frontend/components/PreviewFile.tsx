@@ -87,7 +87,7 @@ const PreviewFile = ({
           {loading && (
             <Loader2
               size={32}
-              className="animate-spin text-indigo-600"
+              className="animate-spin text-[#215c45]"
             />
           )}
 

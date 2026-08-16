@@ -224,7 +224,7 @@ const FileTable = ({
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="search files"
-            className="w-full rounded-xl border border-slate-200 bg-white  py-2.5 pl-10 pr-3 text-sm text-slate-700 placeholder:text-slate-400 outline-none transition-all duration-200 hover:border-slate-300  focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10"
+            className="w-full rounded-xl border border-slate-200 bg-white  py-2.5 pl-10 pr-3 text-sm text-slate-700 placeholder:text-slate-400 outline-none transition-all duration-200 hover:border-slate-300  focus:border-[#215c45] focus:ring-4 focus:ring-[#215c45]/10"
           />
         </div>
         <div className="flex gap-2">

@@ -55,11 +55,11 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
       <section className="flex min-h-screen flex-col px-5 py-6 sm:px-10 lg:px-14">
         <Logo />
         <div className="mx-auto my-auto w-full max-w-md py-12">
-          <p className="text-sm font-semibold text-indigo-600">
+          <p className="text-sm font-semibold text-[#6f7972]">
             {signup ? "START YOUR VAULT" : "WELCOME BACK"}
           </p>
           <h1 className="mt-3 text-4xl font-semibold tracking-[-.04em] text-slate-950">
-            {signup ? "Create your account" : "Sign in to Vaultly"}
+            {signup ? "Create your account" : "Sign in to FileKeeper"}
           </h1>
           <p className="mt-3 text-slate-500">
             {signup
@@ -92,7 +92,7 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
                 </label>
                 {!signup && (
                   <Link
-                    className="text-xs font-semibold text-indigo-600"
+                    className="text-xs font-semibold text-[#215c45]"
                     href="#"
                   >
                     Forgot password?
@@ -127,7 +127,7 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
             <button
               type="submit"
               disabled={loading}
-              className="flex w-full items-center justify-center gap-2 rounded-2xl bg-indigo-600 px-5 py-3.5 font-semibold text-white shadow-lg shadow-indigo-600/20 transition hover:bg-indigo-500 disabled:cursor-not-allowed disabled:opacity-60"
+              className="flex w-full items-center justify-center gap-2 rounded-2xl bg-[#215c45] px-5 py-3.5 font-semibold text-white shadow-lg shadow-[#215c45]/20 transition hover:bg-[#215c45]/90 disabled:cursor-not-allowed disabled:opacity-60"
             >
               {loading ? (
                 <>
@@ -143,9 +143,9 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
             </button>
           </form>
           <p className="mt-7 text-center text-sm text-slate-500">
-            {signup ? "Already have an account?" : "New to Vaultly?"}{" "}
+            {signup ? "Already have an account?" : "New to FileKeeper?"}{" "}
             <Link
-              className="font-semibold text-indigo-600"
+              className="font-semibold text-[#215c45]"
               href={signup ? "/login" : "/signup"}
             >
               {signup ? "Sign in" : "Create an account"}
