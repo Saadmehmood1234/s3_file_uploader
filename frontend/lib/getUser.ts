@@ -1,20 +1,34 @@
-import { env } from "@/config/env";
 import { cookies } from "next/headers";
 
 export const getCurrentUser = async () => {
-  const cookieStore = await cookies();
-  console.log("Env",env.apiBaseUrl)
-  const response = await fetch(`${env.apiBaseUrl}/auth/me`, {
-    headers: {
-      cookie: cookieStore.toString(),
-    },
-    cache: "no-store",
-  });
-console.log("Before user")
-  if (!response.ok) {
+  try {
+    const cookieStore = await cookies();
+
+    const backendUrl = process.env.BACKEND_URL;
+
+    if (!backendUrl) {
+      throw new Error("BACKEND_URL is not configured");
+    }
+
+    const response = await fetch(
+      `${backendUrl}/api/v1/auth/me`,
+      {
+        headers: {
+          cookie: cookieStore.toString(),
+        },
+        cache: "no-store",
+      },
+    );
+
+    if (!response.ok) {
+      return null;
+    }
+
+    const result = await response.json();
+
+    return result.data;
+  } catch (error) {
+    console.error("getCurrentUser failed:", error);
     return null;
   }
-  const result = await response.json();
-  console.log("After user",result)
-  return result.data;
 };
