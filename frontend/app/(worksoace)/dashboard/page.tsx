@@ -26,7 +26,7 @@ export default function DashboardPage() {
       <PageHeading
         eyebrow={currentDate}
         title={`Hello, ${user.name}`}
-        description="Here’s what’s happening in your vault today."
+        description="Manage all your files here."
       />
 
       <div className="grid gap-4 md:grid-cols-3">

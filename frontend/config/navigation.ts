@@ -1,10 +1,8 @@
 import {
   LayoutDashboard,
-  Share2,
   Clock3,
   CircleAlert,
   LucideIcon,
-  Globe2,
   Globe,
 } from "lucide-react";
 export interface NavItem {
@@ -15,7 +13,7 @@ export interface NavItem {
 
 export const NAVIGATION: NavItem[] = [
   {
-    label: "Dashboard",
+    label: "Overvue",
     path: "/dashboard",
     icon: LayoutDashboard,
   },
@@ -25,12 +23,12 @@ export const NAVIGATION: NavItem[] = [
     icon: Globe,
   },
     {
-    label: "Important",
+    label: "Important Files",
     path: "/important",
     icon: CircleAlert,
   },
     {
-    label: "Recent",
+    label: "Recent Files",
     path: "/recent",
     icon: Clock3,
   }
