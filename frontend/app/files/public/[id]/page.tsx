@@ -103,7 +103,7 @@ const PublicFiles = () => {
             <button
               type="button"
               onClick={handleDownload}
-              className="inline-flex items-center justify-between gap-1 bg-[#615FFF] text-white px-3 py-2 hover:bg-[#615FFF]/90 rounded-full"
+              className="inline-flex items-center justify-between gap-1 bg-[#215c45] text-white px-3 py-2 hover:bg-[#215c45]/90 rounded-full"
             >
               <Download size={18} />
               Download
