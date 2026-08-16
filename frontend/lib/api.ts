@@ -6,28 +6,17 @@ import axios, {
 import { env } from "@/config/env";
 import {
   ApiFile,
+  ApiResponse,
+  DownloadData,
   UploadPayload,
+  UploadUrlData,
 } from "@/types/file";
 import {
   LoginPayload,
   RegisterPayload,
 } from "@/types/auth";
 
-interface ApiResponse<T> {
-  success: boolean;
-  message: string;
-  data: T;
-}
 
-interface UploadUrlData {
-  file: ApiFile;
-  uploadUrl: string;
-}
-
-interface DownloadData {
-  downloadUrl: string;
-  expiredIn: number;
-}
 
 export const api = axios.create({
   baseURL: env.apiBaseUrl,

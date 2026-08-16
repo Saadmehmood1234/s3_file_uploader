@@ -59,3 +59,22 @@ export interface FilesContextType {
   loading: boolean;
   fetchFiles: () => Promise<void>;
 }
+
+export interface ApiResponse<T> {
+  success: boolean;
+  message: string;
+  data: T;
+}
+
+export interface UploadUrlData {
+  file: ApiFile;
+  uploadUrl: string;
+}
+
+export interface DownloadData {
+  id:string
+  downloadUrl: string;
+  mimeType:string;
+  name:string;
+  size:string
+}

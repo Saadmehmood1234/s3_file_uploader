@@ -10,6 +10,7 @@ export const FILE_TYPES = [
   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
   "application/zip",
+  "application/x-zip-compressed",
   "audio/mpeg",
   "audio/wav",
   "audio/ogg",

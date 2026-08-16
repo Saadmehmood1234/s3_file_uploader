@@ -141,7 +141,7 @@ const FileTable = ({
       );
       toast.success("File deleted successfully");
       setDeleteFile(null);
-      setDeleting(false)
+      setDeleting(false);
     } catch (error: any) {
       toast.error(error.response?.data?.message || "Failed to delete the file");
       setDeleting(false);
@@ -173,6 +173,10 @@ const FileTable = ({
     } catch (error: any) {
       toast.error(error.response?.data?.message || "Failed to download file.");
     }
+  };
+  const handleCopy = (id:string) => {
+    navigator.clipboard?.writeText(`${location.origin}/files/public/${id}`);
+    toast.success("Link copied!")
   };
   return (
     <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm shadow-sky-200/40">
@@ -289,11 +293,7 @@ const FileTable = ({
                       />
                     </button>
                     <button
-                      onClick={() =>
-                        navigator.clipboard?.writeText(
-                          `${location.origin}/files/public/${f.id}`,
-                        )
-                      }
+                      onClick={() => handleCopy(f.id)}
                       aria-label="Share"
                       className="action-button"
                     >
