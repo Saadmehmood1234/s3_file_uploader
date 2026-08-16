@@ -7,7 +7,7 @@ import publicFileRoutes from "./routes/public.routes.js";
 import cookieParser from "cookie-parser";
 import errorMiddleware from "./middleware/error.middleware.js";
 const app = express();
-
+app.set("trust proxy", 1);
 app.use(
   cors({
     origin: [
