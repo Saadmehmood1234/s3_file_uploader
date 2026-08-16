@@ -7,7 +7,7 @@ import {
   Heart,
   Link,
   Lock,
-  MoreHorizontal,
+  MoreVertical,
   Search,
   SlidersHorizontal,
   Trash2,
@@ -35,7 +35,8 @@ const FileTable = ({
   const [now] = useState(() => Date.now());
   const [menu, setMenu] = useState<{
     id: string;
-    top: number;
+    top?: number;
+    bottom?: number;
     right: number;
   } | null>(null);
   const [preview, setPreview] = useState<StoredFile | null>(null);
@@ -174,9 +175,36 @@ const FileTable = ({
       toast.error(error.response?.data?.message || "Failed to download file.");
     }
   };
-  const handleCopy = (id:string) => {
+  const handleCopy = (id: string) => {
     navigator.clipboard?.writeText(`${location.origin}/files/public/${id}`);
-    toast.success("Link copied!")
+    toast.success("Link copied!");
+  };
+  const handleMenuOpen = (
+    e: React.MouseEvent<HTMLButtonElement>,
+    id: string,
+  ) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+
+    const menuHeight = 100;
+    const gap = 6;
+
+    const spaceBelow = window.innerHeight - rect.bottom;
+
+    if (spaceBelow < menuHeight) {
+      // Open upward
+      setMenu({
+        id,
+        bottom: window.innerHeight - rect.top + gap,
+        right: window.innerWidth - rect.right,
+      });
+    } else {
+      // Open downward
+      setMenu({
+        id,
+        top: rect.bottom + gap,
+        right: window.innerWidth - rect.right,
+      });
+    }
   };
   return (
     <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm shadow-sky-200/40">
@@ -301,23 +329,17 @@ const FileTable = ({
                     </button>
                     <button
                       onClick={(e) => {
+                        e.stopPropagation();
+
                         if (menu?.id === f.id) {
                           setMenu(null);
                           return;
                         }
 
-                        const rect = e.currentTarget.getBoundingClientRect();
-
-                        setMenu({
-                          id: f.id,
-                          top: rect.bottom + 6,
-                          right: window.innerWidth - rect.right,
-                        });
+                        handleMenuOpen(e, f.id);
                       }}
-                      className="action-button"
-                      aria-label="More actions"
                     >
-                      <MoreHorizontal size={18} />
+                      <MoreVertical size={18} />
                     </button>
                   </div>
                   {menu &&
