@@ -1,8 +1,4 @@
 export const up = (pgm) => {
-  pgm.createExtension("pgcrypto", {
-    ifNotExists: true,
-  });
-
   pgm.createTable("users", {
     id: {
       type: "uuid",
