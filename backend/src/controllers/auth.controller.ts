@@ -70,9 +70,7 @@ export const signin = asyncHandler(async (req: Request, res: Response) => {
   //       "You are not verified. We have sent you an Email. Please Verify your Email",
   //   });
   // }
-  console.log("User",user.name,user.email)
   generateJwtToken(user.id, res);
-  console.log("After token generation")
   return res.status(200).json({
     success: true,
     message: "Login Successfully",
@@ -118,7 +116,6 @@ export const verifyUser = asyncHandler(async (req: Request, res: Response) => {
 
 export const fetchUser = asyncHandler(async (req: Request, res: Response) => {
   const userId = req.userId;
-  console.log("UserId", userId);
   if (!userId) {
     ErrorResponse("Unauthorized", 401);
   }
@@ -128,7 +125,6 @@ export const fetchUser = asyncHandler(async (req: Request, res: Response) => {
   if (!user) {
     ErrorResponse("User not found", 404);
   }
-console.log("User Detail",user.name,user.email)
   // if (!user.is_verified) {
   //   ErrorResponse("User is not verified",403);
   // }

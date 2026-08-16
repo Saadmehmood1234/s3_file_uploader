@@ -10,7 +10,6 @@ export default async function WorkspaceLayout({
   children: React.ReactNode;
 }) {
   const user = await getCurrentUser();
-  console.log("user",user)
   if (!user) {
     redirect("/login");
   }

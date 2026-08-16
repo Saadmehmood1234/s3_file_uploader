@@ -15,21 +15,17 @@ export const protect = asyncHandler(
     ) {
       token = req.headers.authorization.split(" ")[1];
     }
-    console.log("Token", token);
     if (!token) {
       const err: any = new Error("Not authorized, token is missing");
       err.statusCode = 401;
       throw err;
     }
-    console.log("Got the token",token)
     try {
       const decode = jwt.verify(token, env.JWT_SECRET) as AuthJwtPayload;
-      console.log("check the decode", decode);
       req.userId = decode.userId;
 
       next();
     } catch {
-      console.log("Failed to decode")
       const err: any = new Error("Invalid or expired token");
       err.statusCode = 401;
       throw err;

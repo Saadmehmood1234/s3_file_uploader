@@ -2,7 +2,6 @@ import pool from "../config/database.js";
 import { CreateFileProps } from "../utils/types.js";
 
 export const createFile = async (file: CreateFileProps) => {
-  console.log(file)
   const query = `
     INSERT INTO files(
     owner_id,
@@ -100,7 +99,6 @@ export const updateFavorite = async (
   ownerId: string,
   favorite: boolean,
 ) => {
-  console.log("fv",favorite,ownerId)
   const result = await pool.query(
     `
       UPDATE files
