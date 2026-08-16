@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 
 export const getCurrentUser = async () => {
   const cookieStore = await cookies();
+  console.log("Env",env.apiBaseUrl)
   const response = await fetch(`${env.apiBaseUrl}/auth/me`, {
     headers: {
       cookie: cookieStore.toString(),
