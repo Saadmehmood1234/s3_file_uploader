@@ -60,7 +60,7 @@ export default function DashboardPage() {
       <div className="mt-7">
         <FileTable
           files={files}
-          title="Recent files"
+          title="All files"
           onFilesChange={setFiles}
         />
       </div>

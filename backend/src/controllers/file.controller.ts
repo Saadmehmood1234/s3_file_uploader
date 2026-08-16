@@ -8,7 +8,7 @@ import {
   getUserFile,
   markFileUpload,
   deleteFileRecord,
-  updateFavorite,
+  updateImportant,
   updateVisibility,
 } from "../repositories/file.repository.js";
 import { CreateFileProps } from "../utils/types.js";
@@ -112,13 +112,14 @@ export const updateFileVisibility = asyncHandler(
   },
 );
 
-export const updateFavoriteFile = asyncHandler(
+export const updateImportantFile = asyncHandler(
   async (req: Request, res: Response) => {
-    const { favorite } = req.body;
-    const file = await updateFavorite(
+    const { important } = req.body;
+    console.log("important",important)
+    const file = await updateImportant(
       req.params.id as string,
       req.userId!,
-      favorite,
+      important,
     );
     if (!file) {
       ErrorResponse("File not found", 404);

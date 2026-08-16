@@ -9,7 +9,7 @@ import {
   downloadFile,
   getFile,
   getFiles,
-  updateFavoriteFile,
+  updateImportantFile,
   updateFileVisibility,
 } from "../controllers/file.controller.js";
 
@@ -17,7 +17,7 @@ import {
   createUploadUrlSchema,
   fileIdSchema,
   updateFileVisibilitySchema,
-  updateFavoriteFileSchema,
+  updateImportantFileSchema,
 } from "../validators/file.schema.js";
 
 const router = Router();
@@ -42,10 +42,10 @@ router.patch(
 );
 
 router.patch(
-  "/:id/favorite",
+  "/:id/important",
   validationMiddleware(fileIdSchema, "params"),
-  validationMiddleware(updateFavoriteFileSchema),
-  updateFavoriteFile,
+  validationMiddleware(updateImportantFileSchema),
+  updateImportantFile,
 );
 
 router.delete("/:id", validationMiddleware(fileIdSchema, "params"), deleteFile);

@@ -140,15 +140,15 @@ export const fileApi = {
     return response.data;
   },
 
-  updateFavoriteFile: async (
+  updateImportantFile: async (
     id: string,
-    favorite: boolean,
+    important: boolean,
   ): Promise<ApiResponse<ApiFile>> => {
     const response =
       await api.patch<ApiResponse<ApiFile>>(
-        `/files/${id}/favorite`,
+        `/files/${id}/important`,
         {
-          favorite,
+          important,
         },
       );
 

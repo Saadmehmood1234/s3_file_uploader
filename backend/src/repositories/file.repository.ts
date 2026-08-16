@@ -34,7 +34,7 @@ export const getUserFile = async (ownerId: string) => {
       mime_type,
       size,
       visibility,
-      favorite,
+      is_important,
       status,
       created_at,
       updated_at
@@ -94,23 +94,23 @@ export const updateVisibility = async (
   return result.rows[0];
 };
 
-export const updateFavorite = async (
+export const updateImportant = async (
   id: string,
   ownerId: string,
-  favorite: boolean,
+  important: boolean,
 ) => {
   const result = await pool.query(
     `
       UPDATE files
       SET
-        favorite = $1,
+        is_important = $1,
         updated_at = CURRENT_TIMESTAMP
       WHERE id = $2
         AND owner_id = $3
         AND status = 'uploaded'
       RETURNING *
     `,
-    [favorite, id, ownerId],
+    [important, id, ownerId],
   );
 
   return result.rows[0];

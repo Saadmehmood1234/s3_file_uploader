@@ -40,7 +40,7 @@ export const up = (pgm) => {
       check: "visibility IN ('public', 'private')",
     },
 
-    favorite: {
+    is_important: {
       type: "boolean",
       notNull: true,
       default: false,
@@ -70,8 +70,8 @@ export const up = (pgm) => {
     name: "idx_files_owner",
   });
 
-  pgm.createIndex("files", ["owner_id", "favorite"], {
-    name: "idx_files_owner_favorite",
+  pgm.createIndex("files", ["owner_id", "is_important"], {
+    name: "idx_files_owner_important",
   });
 
   pgm.createIndex("files", ["owner_id", "visibility"], {

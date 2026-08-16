@@ -5,17 +5,19 @@ import { useFiles } from "@/context/FilesProvider";
 export default function FavoriteFilePage() {
   const { files, setFiles } = useFiles();
 
-  const favorateFile = files.filter(
-  (file) => file.favorite,
-);
+  const importantFiles = files.filter((file) => file.isImportant);
   return (
     <div className="mx-auto max-w-7xl">
       <PageHeading
-        eyebrow="Pinned"
-        title="Favorites"
+        eyebrow="Important"
+        title="Important Files"
         description="Your most important files, always close at hand."
       />
-      <FileTable files={favorateFile} title="Recent files" onFilesChange={setFiles} />
+      <FileTable
+        files={importantFiles}
+        title="Important files"
+        onFilesChange={setFiles}
+      />
     </div>
   );
 }

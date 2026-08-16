@@ -11,9 +11,9 @@ export default function RecentFilePage() {
   return (
     <div className="mx-auto max-w-7xl">
       <PageHeading
-        eyebrow="Pinned"
-        title="Favorites"
-        description="Your most important files, always close at hand."
+        eyebrow="Recent"
+        title="Recent Files"
+        description="Your Recent files, always close at hand."
       />
       <FileTable files={recentFiles} title="Recent files" onFilesChange={setFiles} />
     </div>

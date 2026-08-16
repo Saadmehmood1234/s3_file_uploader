@@ -40,7 +40,7 @@ export const FilesProvider = ({ children }: { children: React.ReactNode }) => {
 
         visibility: file.visibility,
 
-        favorite: file.favorite,
+        isImportant: file.is_important,
 
         shared: file.visibility === "public",
 

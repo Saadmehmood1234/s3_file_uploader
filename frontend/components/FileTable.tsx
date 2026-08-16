@@ -1,10 +1,10 @@
 "use client";
 import { StoredFile } from "@/types/file";
 import {
+  CircleAlert,
   Download,
   Eye,
   Globe2,
-  Heart,
   Link,
   Lock,
   MoreVertical,
@@ -73,30 +73,32 @@ const FileTable = ({
         return true;
       });
   }, [files, query, size, time, now]);
-  const toggle = async (id: string, key: "favorite" | "visibility") => {
+  const toggle = async (id: string, key: "important" | "visibility") => {
     const currentFile = files.find((file) => file.id === id);
 
     if (!currentFile) return;
 
-    if (key === "favorite") {
-      const newFavorite = !currentFile.favorite;
+    if (key === "important") {
+      const newImportant = !currentFile.isImportant;
       onFilesChange((currentFiles) =>
         currentFiles.map((file) =>
-          file.id === id ? { ...file, favorite: newFavorite } : file,
+          file.id === id ? { ...file, isImportant: newImportant } : file,
         ),
       );
 
       try {
-        await fileApi.updateFavoriteFile(id, newFavorite);
+        await fileApi.updateImportantFile(id, newImportant);
       } catch {
         toast.error(
-          currentFile.favorite
-            ? "Failed to remove from favorites."
-            : "Failed to add to favorites.",
+          currentFile.isImportant
+            ? "Failed to remove from important file."
+            : "Failed to add to important file.",
         );
         onFilesChange((currentFiles) =>
           currentFiles.map((file) =>
-            file.id === id ? { ...file, favorite: currentFile.favorite } : file,
+            file.id === id
+              ? { ...file, isImportant: currentFile.isImportant }
+              : file,
           ),
         );
       }
@@ -250,7 +252,7 @@ const FileTable = ({
         </div>
       </div>
       <div className="overflow-x-auto">
-        <table className="w-full min-w-200 text-left text-sm">
+        <table className="w-full min-w-200 table-fixed text-left text-sm">
           <thead className="bg-slate-50/70 text-xs uppercase tracking-wider text-slate-400">
             <tr>
               <th className="px-5 py-3.5 font-semibold">Name</th>
@@ -258,7 +260,7 @@ const FileTable = ({
               <th className="px-5 py-3.5 font-semibold">Size</th>
               <th className="px-5 py-3.5 font-semibold">Modified</th>
               <th className="px-5 py-3.5 font-semibold">Access</th>
-              <th className="px-5 py-3.5 font-semibold">Actions</th>
+              <th className="px-5 py-3.5 text-center font-semibold">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-400">
@@ -287,11 +289,20 @@ const FileTable = ({
                   <button
                     className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${f.visibility === "public" ? "bg-emerald-50 text-emerald-700" : "bg-slate-100 text-slate-600"}`}
                     onClick={() => toggle(f.id, "visibility")}
+                    title={
+                      f.visibility === "public" ? "Make Private" : "Make Public"
+                    }
                   >
                     {f.visibility === "public" ? (
-                      <Globe2 size={13} />
+                      <p className="inline-flex gap-1 items-center">
+                        {" "}
+                        <Globe2 size={13} /> public
+                      </p>
                     ) : (
-                      <Lock size={13} />
+                      <p className="inline-flex gap-1 items-center">
+                        {" "}
+                        <Lock size={13} /> private{" "}
+                      </p>
                     )}
                   </button>
                 </td>
@@ -301,26 +312,36 @@ const FileTable = ({
                       className="action-button"
                       onClick={() => setPreview(f)}
                       aria-label="Preview"
+                      title="View File"
                     >
                       <Eye size={18} />
                     </button>
                     <button
-                      onClick={() => toggle(f.id, "favorite")}
-                      className={`action-button ${f.favorite ? "text-rose-500" : ""}`}
-                      aria-label="favorite"
+                      onClick={() => toggle(f.id, "important")}
+                      className={`action-button ${
+                        f.isImportant ? "text-amber-500" : "text-slate-400"
+                      }`}
+                      aria-label={
+                        f.isImportant
+                          ? "Remove from important"
+                          : "Mark as important"
+                      }
+                      title={
+                        f.isImportant
+                          ? "Remove from important"
+                          : "Mark as important"
+                      }
                     >
-                      <Heart
+                      <CircleAlert
                         size={18}
-                        className={
-                          f.favorite ? "text-rose-500" : "text-slate-400"
-                        }
-                        fill={f.favorite ? "currentColor" : "none"}
+                        fill={f.isImportant ? "currentColor" : "none"}
                       />
                     </button>
                     <button
                       onClick={() => handleCopy(f.id)}
                       aria-label="Share"
                       className="action-button"
+                      title="Copy Link"
                     >
                       <Link size={18} />
                     </button>
@@ -335,6 +356,7 @@ const FileTable = ({
 
                         handleMenuOpen(e, f.id);
                       }}
+                      title="Actions"
                     >
                       <MoreVertical size={18} />
                     </button>

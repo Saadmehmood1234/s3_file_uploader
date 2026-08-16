@@ -2,8 +2,10 @@ import {
   LayoutDashboard,
   Share2,
   Clock3,
-  Star,
+  CircleAlert,
   LucideIcon,
+  Globe2,
+  Globe,
 } from "lucide-react";
 export interface NavItem {
   label: string;
@@ -20,12 +22,12 @@ export const NAVIGATION: NavItem[] = [
     {
     label: "Shared Files",
     path: "/shared",
-    icon: Share2,
+    icon: Globe,
   },
     {
-    label: "Favorites",
-    path: "/favorites",
-    icon: Star,
+    label: "Important",
+    path: "/important",
+    icon: CircleAlert,
   },
     {
     label: "Recent",

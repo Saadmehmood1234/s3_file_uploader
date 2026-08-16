@@ -45,8 +45,8 @@ export const updateFileVisibilitySchema = z.object({
   visibility: z.enum(["public", "private"]),
 });
 
-export const updateFavoriteFileSchema = z.object({
-  favorite: z.boolean(),
+export const updateImportantFileSchema = z.object({
+  important: z.boolean(),
 });
 
 export const fileIdSchema = z.object({

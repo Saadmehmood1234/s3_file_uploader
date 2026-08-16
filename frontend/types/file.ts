@@ -36,7 +36,7 @@ export interface StoredFile{
   updatedAt: string;
   owner: string;
   visibility: FileVisibility;
-  favorite: boolean;
+  isImportant: boolean;
   shared: boolean;
   recent: boolean;
 };
@@ -48,7 +48,7 @@ export interface ApiFile {
   mime_type: string;
   size: string;
   visibility: "public" | "private";
-  favorite: boolean;
+  is_important: boolean;
   status: "pending" | "uploaded" | "failed";
   created_at: string;
   updated_at: string;

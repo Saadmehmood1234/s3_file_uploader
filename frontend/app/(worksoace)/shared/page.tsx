@@ -9,13 +9,13 @@ export default function SharedFilePage() {
   return (
     <div className="mx-auto max-w-7xl">
       <PageHeading
-        eyebrow="Pinned"
-        title="Favorites"
-        description="Your most important files, always close at hand."
+        eyebrow="Public"
+        title="Shared Files"
+        description="Your public files, always close at hand."
       />
       <FileTable
         files={sharedFiles}
-        title="Recent files"
+        title="Shared files"
         onFilesChange={setFiles}
       />
     </div>
