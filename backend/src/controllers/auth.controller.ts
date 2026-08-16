@@ -70,7 +70,9 @@ export const signin = asyncHandler(async (req: Request, res: Response) => {
   //       "You are not verified. We have sent you an Email. Please Verify your Email",
   //   });
   // }
+  console.log("User",user.name,user.email)
   generateJwtToken(user.id, res);
+  console.log("After token generation")
   return res.status(200).json({
     success: true,
     message: "Login Successfully",
