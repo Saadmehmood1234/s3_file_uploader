@@ -17,7 +17,6 @@ export const Sidebar = ({ onOpenUpload }: { onOpenUpload: () => void }) => {
     try {
       setLoading(true);
       await authApi.logout();
-      toast.success("Logout Successfully");
       router.push("/login");
     } catch {
       toast.error("Error in loging out");

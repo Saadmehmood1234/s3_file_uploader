@@ -37,7 +37,7 @@ export const RenameModal = ({
   };
 
   return (
-    <div className="fixed inset-0 z-[9999] grid place-items-center bg-slate-950/50 p-4 backdrop-blur-sm">
+    <div className="fixed inset-0 z-9999 grid place-items-center bg-slate-950/50 p-4 backdrop-blur-sm">
       <form
         onSubmit={submit}
         className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl"
