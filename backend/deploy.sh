@@ -12,4 +12,4 @@ echo "Building application..."
 npm run build
 
 echo "Restarting PM2..."
-npx pm2 restart s3_file_uploader/backend --update-env
+npx pm2 restart file-storage-backend --update-env
