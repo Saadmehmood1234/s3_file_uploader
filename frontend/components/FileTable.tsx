@@ -20,6 +20,7 @@ import { fileApi } from "@/lib/api";
 import { DeleteModal } from "./DeleteModal";
 import { toast } from "sonner";
 import { createPortal } from "react-dom";
+import { formatDate } from "@/lib/formatDate";
 const FileTable = ({
   files,
   title = "Your files",
@@ -266,16 +267,23 @@ const FileTable = ({
           <tbody className="divide-y divide-slate-400">
             {visible.map((f) => (
               <tr key={f.id} className="group hover:bg-slate-50/60">
-                <td className="px-5 py-4">
+                <td className="max-w-0 px-5 py-4">
                   <button
                     onClick={() => setPreview(f)}
-                    className="flex items-center gap-3 text-left"
+                    className="flex w-full min-w-0 items-center gap-3 text-left"
                   >
-                    <FileBadge type={f.type} />
-                    <div>
-                      <p className="max-w-62.5 truncate font-semibold text-slate-800">
+                    <div className="shrink-0">
+                      <FileBadge type={f.type} />
+                    </div>
+
+                    <div className="min-w-0 flex-1">
+                      <p
+                        className="truncate font-semibold text-slate-800"
+                        title={f.name}
+                      >
                         {f.name}
                       </p>
+
                       <p className="mt-0.5 text-xs text-slate-400">{f.type}</p>
                     </div>
                   </button>
@@ -284,7 +292,7 @@ const FileTable = ({
                 <td className="px-4 py-4 text-slate-500">
                   {calculateFileSize(f.size)}
                 </td>
-                <td className="px-4 py-4 text-slate-500">{f.name}</td>
+                <td className="px-4 py-4 text-slate-500">{formatDate(f.updatedAt)}</td>
                 <td className="px-4 py-4">
                   <button
                     className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${f.visibility === "public" ? "bg-emerald-50 text-emerald-700" : "bg-slate-100 text-slate-600"}`}
