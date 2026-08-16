@@ -34,7 +34,7 @@ export const signup = asyncHandler(async (req: Request, res: Response) => {
     // verification_token_hash: verificationToken.hashedToken,
     // verification_token_expires_at: verificationExpiry,
   };
-  const newUser=await createUser(user);
+  const newUser = await createUser(user);
   // await sendVerificationEmail(normalizedEmail, verificationToken.token);
   generateJwtToken(newUser.id, res);
   res.status(201).json({
@@ -45,11 +45,6 @@ export const signup = asyncHandler(async (req: Request, res: Response) => {
 
 export const signin = asyncHandler(async (req: Request, res: Response) => {
   const { email, password } = req.body;
-  console.log("Email and Password",email,password)
-  // if (!email || !password) {
-  //   ErrorResponse("Missing required fields", 400);
-  // }
-
   const normalizedEmail = email.toLowerCase().trim();
   const user = await findUserByEmail(normalizedEmail);
 
@@ -76,7 +71,6 @@ export const signin = asyncHandler(async (req: Request, res: Response) => {
   //   });
   // }
   generateJwtToken(user.id, res);
-  console.log("Suncces",user.name,user.email)
   return res.status(200).json({
     success: true,
     message: "Login Successfully",
@@ -122,17 +116,17 @@ export const verifyUser = asyncHandler(async (req: Request, res: Response) => {
 
 export const fetchUser = asyncHandler(async (req: Request, res: Response) => {
   const userId = req.userId;
-
+  console.log("UserId", userId);
   if (!userId) {
-    ErrorResponse("Unauthorized",401);
+    ErrorResponse("Unauthorized", 401);
   }
 
   const user = await findUserById(userId!);
 
   if (!user) {
-    ErrorResponse("User not found",404);
+    ErrorResponse("User not found", 404);
   }
-
+console.log("User Detail",user.name,user.email)
   // if (!user.is_verified) {
   //   ErrorResponse("User is not verified",403);
   // }

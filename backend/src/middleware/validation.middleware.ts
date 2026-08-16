@@ -10,7 +10,6 @@ export const validationMiddleware = (
   return (req: Request, _res: Response, next: NextFunction) => {
     try {
       schema.parse(req[source]);
-      console.log("Success validation")
       next();
     } catch (error) {
       if (error instanceof ZodError) {

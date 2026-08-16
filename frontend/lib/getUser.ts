@@ -9,9 +9,11 @@ export const getCurrentUser = async () => {
     },
     cache: "no-store",
   });
+console.log("Before user")
   if (!response.ok) {
     return null;
   }
   const result = await response.json();
+  console.log("After user",result)
   return result.data;
 };
