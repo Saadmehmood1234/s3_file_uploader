@@ -10,7 +10,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: ["http://localhost:3000","https://s3-file-uploader-fl7k-one.vercel.app"],
     credentials: true,
     
   }),
