@@ -45,7 +45,7 @@ export const signup = asyncHandler(async (req: Request, res: Response) => {
 
 export const signin = asyncHandler(async (req: Request, res: Response) => {
   const { email, password } = req.body;
-  console.log("Emao",email,password)
+  console.log("Email and Password",email,password)
   // if (!email || !password) {
   //   ErrorResponse("Missing required fields", 400);
   // }
@@ -76,7 +76,7 @@ export const signin = asyncHandler(async (req: Request, res: Response) => {
   //   });
   // }
   generateJwtToken(user.id, res);
-  console.log("Suncces",email,password)
+  console.log("Suncces",user.name,user.email)
   return res.status(200).json({
     success: true,
     message: "Login Successfully",
