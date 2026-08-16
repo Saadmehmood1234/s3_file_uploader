@@ -11,11 +11,13 @@ import {
   getFiles,
   updateImportantFile,
   updateFileVisibility,
+  renameFile,
 } from "../controllers/file.controller.js";
 
 import {
   createUploadUrlSchema,
   fileIdSchema,
+  renameFileSchema,
   updateFileVisibilitySchema,
   updateImportantFileSchema,
 } from "../validators/file.schema.js";
@@ -60,6 +62,13 @@ router.get(
   "/:id/download",
   validationMiddleware(fileIdSchema, "params"),
   downloadFile,
+);
+
+router.patch(
+  "/:id/rename",
+  validationMiddleware(fileIdSchema, "params"),
+  validationMiddleware(renameFileSchema),
+  renameFile,
 );
 
 export default router;

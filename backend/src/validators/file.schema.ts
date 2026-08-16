@@ -1,24 +1,45 @@
-import { boolean, z } from "zod";
+import { z } from "zod";
 
 export const FILE_TYPES = [
-  "image/jpeg",
-  "image/png",
-  "image/webp",
-  "image/gif",
   "application/pdf",
   "text/plain",
   "text/csv",
-  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  "application/json",
+  "application/xml",
+  "text/xml",
+  "text/markdown",
+  "application/msword",
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  "application/vnd.ms-excel",
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  "application/vnd.ms-powerpoint",
+  "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  "image/avif",
+  "image/gif",
+  "image/svg+xml",
+  "image/bmp",
+  "image/tiff",
+  "image/x-icon",
   "application/zip",
+  "application/x-rar-compressed",
+  "application/vnd.rar",
+  "application/x-7z-compressed",
+  "application/x-tar",
+  "application/gzip",
   "audio/mpeg",
   "audio/wav",
   "audio/ogg",
   "audio/mp4",
+  "audio/aac",
+  "audio/flac",
   "video/mp4",
   "video/webm",
   "video/quicktime",
   "video/x-msvideo",
+  "video/x-matroska",
 ] as const;
 
 const MAX_FILE_SIZE = 400 * 1024 * 1024;
@@ -51,4 +72,13 @@ export const updateImportantFileSchema = z.object({
 
 export const fileIdSchema = z.object({
   id: z.uuid("Invalid file ID"),
+});
+
+
+export const renameFileSchema = z.object({
+  name: z
+    .string()
+    .trim()
+    .min(1, "File name is required")
+    .max(255, "File name is too long"),
 });

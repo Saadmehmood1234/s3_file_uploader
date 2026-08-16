@@ -1,7 +1,4 @@
-
-import axios, {
-  AxiosProgressEvent,
-} from "axios";
+import axios, { AxiosProgressEvent } from "axios";
 
 import { env } from "@/config/env";
 import {
@@ -11,12 +8,7 @@ import {
   UploadPayload,
   UploadUrlData,
 } from "@/types/file";
-import {
-  LoginPayload,
-  RegisterPayload,
-} from "@/types/auth";
-
-
+import { LoginPayload, RegisterPayload } from "@/types/auth";
 
 export const api = axios.create({
   baseURL: env.apiBaseUrl,
@@ -53,16 +45,14 @@ export const authApi = {
   },
 };
 
-
 export const fileApi = {
   createUploadUrl: async (
     payload: UploadPayload,
   ): Promise<ApiResponse<UploadUrlData>> => {
-    const response =
-      await api.post<ApiResponse<UploadUrlData>>(
-        "/files/upload-url",
-        payload,
-      );
+    const response = await api.post<ApiResponse<UploadUrlData>>(
+      "/files/upload-url",
+      payload,
+    );
 
     return response.data;
   },
@@ -77,14 +67,11 @@ export const fileApi = {
         "Content-Type": file.type,
       },
 
-      onUploadProgress: (
-        progressEvent: AxiosProgressEvent,
-      ) => {
+      onUploadProgress: (progressEvent: AxiosProgressEvent) => {
         if (!progressEvent.total) return;
 
         const percent = Math.round(
-          (progressEvent.loaded * 100) /
-            progressEvent.total,
+          (progressEvent.loaded * 100) / progressEvent.total,
         );
 
         onProgress(percent);
@@ -92,35 +79,22 @@ export const fileApi = {
     });
   },
 
-  completeUpload: async (
-    id: string,
-  ): Promise<ApiResponse<ApiFile>> => {
-    const response =
-      await api.post<ApiResponse<ApiFile>>(
-        `/files/${id}/complete`,
-      );
+  completeUpload: async (id: string): Promise<ApiResponse<ApiFile>> => {
+    const response = await api.post<ApiResponse<ApiFile>>(
+      `/files/${id}/complete`,
+    );
 
     return response.data;
   },
 
-  getFile: async (
-    id: string,
-  ): Promise<ApiResponse<ApiFile>> => {
-    const response =
-      await api.get<ApiResponse<ApiFile>>(
-        `/files/${id}`,
-      );
+  getFile: async (id: string): Promise<ApiResponse<ApiFile>> => {
+    const response = await api.get<ApiResponse<ApiFile>>(`/files/${id}`);
 
     return response.data;
   },
 
-  getFiles: async (): Promise<
-    ApiResponse<ApiFile[]>
-  > => {
-    const response =
-      await api.get<ApiResponse<ApiFile[]>>(
-        "/files",
-      );
+  getFiles: async (): Promise<ApiResponse<ApiFile[]>> => {
+    const response = await api.get<ApiResponse<ApiFile[]>>("/files");
 
     return response.data;
   },
@@ -129,13 +103,12 @@ export const fileApi = {
     id: string,
     visibility: "public" | "private",
   ): Promise<ApiResponse<ApiFile>> => {
-    const response =
-      await api.patch<ApiResponse<ApiFile>>(
-        `/files/${id}/visibility`,
-        {
-          visibility,
-        },
-      );
+    const response = await api.patch<ApiResponse<ApiFile>>(
+      `/files/${id}/visibility`,
+      {
+        visibility,
+      },
+    );
 
     return response.data;
   },
@@ -144,46 +117,41 @@ export const fileApi = {
     id: string,
     important: boolean,
   ): Promise<ApiResponse<ApiFile>> => {
-    const response =
-      await api.patch<ApiResponse<ApiFile>>(
-        `/files/${id}/important`,
-        {
-          important,
-        },
-      );
+    const response = await api.patch<ApiResponse<ApiFile>>(
+      `/files/${id}/important`,
+      {
+        important,
+      },
+    );
 
     return response.data;
   },
 
-  deleteFile: async (
-    id: string,
-  ): Promise<ApiResponse<null>> => {
-    const response =
-      await api.delete<ApiResponse<null>>(
-        `/files/${id}`,
-      );
+  deleteFile: async (id: string): Promise<ApiResponse<null>> => {
+    const response = await api.delete<ApiResponse<null>>(`/files/${id}`);
 
     return response.data;
   },
 
-  downloadFile: async (
-    id: string,
-  ): Promise<ApiResponse<DownloadData>> => {
-    const response =
-      await api.get<ApiResponse<DownloadData>>(
-        `/files/${id}/download`,
-      );
+  downloadFile: async (id: string): Promise<ApiResponse<DownloadData>> => {
+    const response = await api.get<ApiResponse<DownloadData>>(
+      `/files/${id}/download`,
+    );
 
     return response.data;
   },
 
-  getPublicFile: async (
-    id: string,
-  ): Promise<ApiResponse<DownloadData>> => {
-    const response =
-      await api.get<ApiResponse<DownloadData>>(
-        `/public/files/${id}`,
-      );
+  getPublicFile: async (id: string): Promise<ApiResponse<DownloadData>> => {
+    const response = await api.get<ApiResponse<DownloadData>>(
+      `/public/files/${id}`,
+    );
+
+    return response.data;
+  },
+  renameFile: async (id: string, name: string) => {
+    const response = await api.patch(`/files/${id}/rename`, {
+      name,
+    });
 
     return response.data;
   },

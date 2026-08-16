@@ -15,7 +15,16 @@ export const FilePreviewContent = ({
   name,
   type,
 }: FilePreviewContentProps) => {
-  const isImage = ["JPG", "JPEG", "PNG", "WEBP", "GIF"].includes(type);
+  const isImage = [
+    "JPG",
+    "JPEG",
+    "PNG",
+    "WEBP",
+    "AVIF",
+    "GIF",
+    "SVG",
+    "BMP",
+  ].includes(type);
   const isVideo = ["MP4", "WEBM", "MOV", "AVI"].includes(type);
   const isAudio = ["MP3", "WAV", "OGG", "M4A"].includes(type);
   const isZip = type === "ZIP";
@@ -124,7 +133,6 @@ const TextPreview = ({ url }: { url: string }) => {
   );
 };
 
-
 const CSVPreview = ({ url }: { url: string }) => {
   const [rows, setRows] = useState<string[][]>([]);
   const [loading, setLoading] = useState(true);
@@ -147,9 +155,7 @@ const CSVPreview = ({ url }: { url: string }) => {
         const parsedRows = text
           .trim()
           .split(/\r?\n/)
-          .map((row) =>
-            row.split(",").map((cell) => cell.trim()),
-          );
+          .map((row) => row.split(",").map((cell) => cell.trim()));
 
         setRows(parsedRows);
       } catch {
@@ -165,10 +171,7 @@ const CSVPreview = ({ url }: { url: string }) => {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-16">
-        <Loader2
-          className="animate-spin text-[#215c45]"
-          size={28}
-        />
+        <Loader2 className="animate-spin text-[#215c45]" size={28} />
       </div>
     );
   }
@@ -180,9 +183,7 @@ const CSVPreview = ({ url }: { url: string }) => {
 
         <p className="font-medium">CSV preview unavailable</p>
 
-        <p className="mt-1 text-sm text-slate-400">
-          {error}
-        </p>
+        <p className="mt-1 text-sm text-slate-400">{error}</p>
       </div>
     );
   }
@@ -216,10 +217,7 @@ const CSVPreview = ({ url }: { url: string }) => {
 
         <tbody>
           {data.map((row, rowIndex) => (
-            <tr
-              key={rowIndex}
-              className="transition hover:bg-slate-50"
-            >
+            <tr key={rowIndex} className="transition hover:bg-slate-50">
               {headers.map((_, columnIndex) => (
                 <td
                   key={columnIndex}

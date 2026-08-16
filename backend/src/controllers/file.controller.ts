@@ -10,6 +10,7 @@ import {
   deleteFileRecord,
   updateImportant,
   updateVisibility,
+  renameOwnedFile,
 } from "../repositories/file.repository.js";
 import { CreateFileProps } from "../utils/types.js";
 import {
@@ -191,3 +192,26 @@ export const deleteFile = asyncHandler(async (req: Request, res: Response) => {
     message: "File deleted successfully",
   });
 });
+
+
+export const renameFile = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { name } = req.body;
+
+    const file = await renameOwnedFile(
+      req.params.id as string,
+      req.userId!,
+      name,
+    );
+
+    if (!file) {
+      ErrorResponse("File not found", 404);
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "File renamed successfully",
+      data: file,
+    });
+  },
+);

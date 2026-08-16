@@ -16,15 +16,15 @@ export const UploadModal = ({
 }) => {
   const input = useRef<HTMLInputElement>(null);
   const { fetchFiles } = useFiles();
-  const [file, setFile] = useState<File | null>(null);
-  const [progress, setProgress] = useState(0);
+  const [files, setFiles] = useState<File[]>([]);
+  const [progress, setProgress] = useState<Record<string, number>>({});
   const [uploading, setUploading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
 
   const reset = () => {
-    setFile(null);
-    setProgress(0);
+    setFiles([]);
+    setProgress({});
     setUploading(false);
     setSuccess(false);
     setError("");
@@ -41,61 +41,81 @@ export const UploadModal = ({
     onClose();
   };
 
-  const uploadFile = async (selectedFile: File) => {
+  const uploadFiles = async (selectedFiles: File[]) => {
     try {
-      setFile(selectedFile);
-      setProgress(0);
       setUploading(true);
       setSuccess(false);
       setError("");
-      const uploadResponse = await fileApi.createUploadUrl({
-        fileName: selectedFile.name,
-        mimeType: selectedFile.type,
-        size: selectedFile.size,
-      });
 
-      const uploadedFile = uploadResponse.data.file;
-      const uploadUrl = uploadResponse.data.uploadUrl;
+      for (const selectedFile of selectedFiles) {
+        const key = `${selectedFile.name}-${selectedFile.size}`;
 
-      await fileApi.uploadToStorage(uploadUrl, selectedFile, (percent) => {
-        setProgress(percent);
-      });
+        setProgress((current) => ({
+          ...current,
+          [key]: 0,
+        }));
 
-      await fileApi.completeUpload(uploadedFile.id);
+        const uploadResponse = await fileApi.createUploadUrl({
+          fileName: selectedFile.name,
+          mimeType: selectedFile.type,
+          size: selectedFile.size,
+        });
+
+        const uploadedFile = uploadResponse.data.file;
+        const uploadUrl = uploadResponse.data.uploadUrl;
+
+        await fileApi.uploadToStorage(uploadUrl, selectedFile, (percent) => {
+          setProgress((current) => ({
+            ...current,
+            [key]: percent,
+          }));
+        });
+
+        await fileApi.completeUpload(uploadedFile.id);
+
+        setProgress((current) => ({
+          ...current,
+          [key]: 100,
+        }));
+      }
+
       await fetchFiles();
-      setProgress(100);
-      setSuccess(true);
-      setUploading(false);
       await onUploaded?.();
+
+      setSuccess(true);
+
       setTimeout(() => {
         reset();
         onClose();
-      }, 1000);
+      }, 1200);
     } catch (error: any) {
       setError(
         error.response?.data?.message ||
-          "File upload failed. Please try again.",
+          "Some files failed to upload. Please try again.",
       );
+    } finally {
       setUploading(false);
-      setSuccess(false);
     }
   };
 
-  const handleFileChange = (files: FileList | null) => {
-    const selectedFile = files?.[0];
+  const handleFileChange = (fileList: FileList | null) => {
+    if (!fileList?.length) return;
 
-    if (!selectedFile) return;
+    const selectedFiles = Array.from(fileList);
 
-    uploadFile(selectedFile);
+    setFiles(selectedFiles);
+    uploadFiles(selectedFiles);
   };
 
   const handleOnDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
-    const selectedFile = e.dataTransfer.files?.[0];
 
-    if (!selectedFile) return;
+    const selectedFiles = Array.from(e.dataTransfer.files);
 
-    uploadFile(selectedFile);
+    if (!selectedFiles.length) return;
+
+    setFiles(selectedFiles);
+    uploadFiles(selectedFiles);
   };
 
   if (!open) return null;
@@ -145,6 +165,7 @@ export const UploadModal = ({
           <input
             ref={input}
             type="file"
+            multiple
             disabled={uploading}
             className="hidden"
             onChange={(e) => handleFileChange(e.target.files)}
@@ -162,60 +183,80 @@ export const UploadModal = ({
             PDF, images, video, documents or ZIP
           </p>
         </div>
+        {files.length > 0 && (
+          <div className="mt-5 max-h-72 space-y-3 overflow-y-auto pr-1">
+            {files.map((file) => {
+              const key = `${file.name}-${file.size}`;
+              const fileProgress = progress[key] ?? 0;
+              const completed = fileProgress === 100;
 
-        {file && (
-          <div className="mt-5 rounded-2xl border border-slate-200 p-4">
-            <div className="flex items-start gap-3">
-              <span className="rounded-xl bg-[#215c45]/5 p-2 text-[#215c45]">
-                <FileUp size={28} />
-              </span>
+              return (
+                <div
+                  key={key}
+                  className="rounded-xl border border-slate-200 bg-white p-3.5"
+                >
+                  <div className="flex items-start gap-3">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#215c45]/10 text-[#215c45]">
+                      <FileUp size={20} />
+                    </div>
 
-              <div className="min-w-0 flex-1">
-                <div className="flex justify-between gap-3">
-                  <div className="min-w-0">
-                    <p className="truncate font-medium text-slate-800">
-                      {file.name}
-                    </p>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="min-w-0">
+                          <p className="truncate text-sm font-medium text-slate-800">
+                            {file.name}
+                          </p>
 
-                    <p className="text-xs text-slate-400">
-                      {(file.size / 1048576).toFixed(1)} MB
-                    </p>
+                          <p className="mt-0.5 text-xs text-slate-400">
+                            {(file.size / 1024 / 1024).toFixed(1)} MB
+                          </p>
+                        </div>
+
+                        <span
+                          className={`shrink-0 text-xs font-medium ${
+                            completed ? "text-emerald-600" : "text-[#215c45]"
+                          }`}
+                        >
+                          {completed ? (
+                            <CheckCircle2 size={17} />
+                          ) : (
+                            `${fileProgress}%`
+                          )}
+                        </span>
+                      </div>
+
+                      <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-slate-100">
+                        <div
+                          className={`h-full rounded-full transition-[width] duration-200 ${
+                            completed ? "bg-emerald-500" : "bg-[#215c45]"
+                          }`}
+                          style={{
+                            width: `${fileProgress}%`,
+                          }}
+                        />
+                      </div>
+
+                      <p className="mt-2 text-xs text-slate-400">
+                        {completed
+                          ? "Upload complete"
+                          : fileProgress > 0
+                            ? "Uploading..."
+                            : "Preparing upload..."}
+                      </p>
+                    </div>
                   </div>
-
-                  {uploading && (
-                    <span className="text-xs font-medium text-[#215c45]">
-                      {progress}%
-                    </span>
-                  )}
                 </div>
+              );
+            })}
 
-                <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-slate-100">
-                  <div
-                    style={{
-                      width: `${progress}%`,
-                    }}
-                    className="h-full rounded-full bg-[#215c45] transition-all"
-                  />
-                </div>
+            {error && <p className="text-sm text-rose-600">{error}</p>}
 
-                <div className="mt-2 text-xs">
-                  {uploading && (
-                    <span className="text-slate-400">
-                      Uploading · {progress}%
-                    </span>
-                  )}
-
-                  {success && (
-                    <span className="inline-flex items-center gap-1 text-emerald-600">
-                      <CheckCircle2 size={13} />
-                      Upload complete
-                    </span>
-                  )}
-
-                  {error && <span className="text-rose-600">{error}</span>}
-                </div>
-              </div>
-            </div>
+            {success && (
+              <p className="flex items-center gap-1.5 text-sm font-medium text-emerald-600">
+                <CheckCircle2 size={16} />
+                All files uploaded successfully.
+              </p>
+            )}
           </div>
         )}
       </section>

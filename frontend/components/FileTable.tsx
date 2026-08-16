@@ -8,6 +8,7 @@ import {
   Link,
   Lock,
   MoreVertical,
+  Pencil,
   Search,
   SlidersHorizontal,
   Trash2,
@@ -21,6 +22,7 @@ import { DeleteModal } from "./DeleteModal";
 import { toast } from "sonner";
 import { createPortal } from "react-dom";
 import { formatDate } from "@/lib/formatDate";
+import { RenameModal } from "./RenameModal";
 const FileTable = ({
   files,
   title = "Your files",
@@ -43,7 +45,8 @@ const FileTable = ({
   const [preview, setPreview] = useState<StoredFile | null>(null);
   const [deleteFile, setDeleteFile] = useState<StoredFile | null>(null);
   const [deleting, setDeleting] = useState(false);
-
+  const [renameFile, setRenameFile] = useState<StoredFile | null>(null);
+  const [renaming, setRenaming] = useState(false);
   const visible = useMemo(() => {
     const MB = 1024 * 1024;
     return files
@@ -206,6 +209,29 @@ const FileTable = ({
       right: window.innerWidth - rect.right,
     });
   };
+
+  const handleRename = async (name: string) => {
+    if (!renameFile) return;
+
+    try {
+      setRenaming(true);
+
+      await fileApi.renameFile(renameFile.id, name);
+
+      onFilesChange((currentFiles) =>
+        currentFiles.map((file) =>
+          file.id === renameFile.id ? { ...file, name } : file,
+        ),
+      );
+
+      toast.success("File renamed successfully.");
+      setRenameFile(null);
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || "Failed to rename file.");
+    } finally {
+      setRenaming(false);
+    }
+  };
   return (
     <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm shadow-sky-200/40">
       <div className="flex flex-col gap-3 border-b border-slate-100 p-4 sm:flex-row sm:items-center">
@@ -292,7 +318,9 @@ const FileTable = ({
                 <td className="px-4 py-4 text-slate-500">
                   {calculateFileSize(f.size)}
                 </td>
-                <td className="px-4 py-4 text-slate-500">{formatDate(f.updatedAt)}</td>
+                <td className="px-4 py-4 text-slate-500">
+                  {formatDate(f.updatedAt)}
+                </td>
                 <td className="px-4 py-4">
                   <button
                     className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${f.visibility === "public" ? "bg-emerald-50 text-emerald-700" : "bg-slate-100 text-slate-600"}`}
@@ -393,7 +421,22 @@ const FileTable = ({
                           <Download size={18} />
                           Download
                         </button>
+                        <button
+                          className="menu-button"
+                          onClick={() => {
+                            const file = files.find(
+                              (file) => file.id === menu.id,
+                            );
 
+                            if (!file) return;
+
+                            setRenameFile(file);
+                            setMenu(null);
+                          }}
+                        >
+                          <Pencil size={18} />
+                          Rename
+                        </button>
                         <button
                           onClick={() => {
                             const file = files.find(
@@ -432,6 +475,13 @@ const FileTable = ({
         loading={deleting}
         onDelete={handleDelete}
         onClose={() => setDeleteFile(null)}
+      />
+      <RenameModal
+        open={!!renameFile}
+        currentName={renameFile?.name ?? ""}
+        loading={renaming}
+        onClose={() => setRenameFile(null)}
+        onRename={handleRename}
       />
     </section>
   );

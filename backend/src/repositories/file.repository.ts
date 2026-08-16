@@ -144,3 +144,25 @@ export const deleteFileRecord = async (
 
   return result.rows[0];
 };
+
+export const renameOwnedFile = async (
+  id: string,
+  ownerId: string,
+  name: string,
+) => {
+  const result = await pool.query(
+    `
+      UPDATE files
+      SET
+        original_name = $1,
+        updated_at = CURRENT_TIMESTAMP
+      WHERE id = $2
+        AND owner_id = $3
+        AND status = 'uploaded'
+      RETURNING *
+    `,
+    [name, id, ownerId],
+  );
+
+  return result.rows[0];
+};
