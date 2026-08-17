@@ -259,7 +259,7 @@ export const UploadModal = ({
               })}
 
               {error && (
-                <p className="break-words text-xs text-rose-600 sm:text-sm">
+                <p className="wrap-words text-xs text-rose-600 sm:text-sm">
                   {error}
                 </p>
               )}
