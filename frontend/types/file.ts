@@ -65,10 +65,10 @@ export type StoredFileType =
   | "OGV"
   | "OTHER";
 
-export interface StoredFile{
+export interface StoredFile {
   id: string;
   name: string;
-  type:StoredFileType;
+  type: StoredFileType;
   size: number;
   sizeLabel: string;
   updatedAt: string;
@@ -77,8 +77,8 @@ export interface StoredFile{
   isImportant: boolean;
   shared: boolean;
   recent: boolean;
-};
-
+  thumbnailUrl?: string;
+}
 
 export interface ApiFile {
   id: string;
@@ -90,6 +90,7 @@ export interface ApiFile {
   status: "pending" | "uploaded" | "failed";
   created_at: string;
   updated_at: string;
+  previewUrl?:string
 }
 
 export interface FilesContextType {
@@ -111,9 +112,13 @@ export interface UploadUrlData {
 }
 
 export interface DownloadData {
-  id:string
+  id: string;
   downloadUrl: string;
-  mimeType:string;
-  name:string;
-  size:string
+  mimeType: string;
+  name: string;
+  size: string;
+}
+
+export interface FilePreviewUrl {
+  previewUrl: string | null;
 }

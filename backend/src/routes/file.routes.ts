@@ -12,6 +12,7 @@ import {
   updateImportantFile,
   updateFileVisibility,
   renameFile,
+  previewFile,
 } from "../controllers/file.controller.js";
 
 import {
@@ -70,5 +71,6 @@ router.patch(
   validationMiddleware(renameFileSchema),
   renameFile,
 );
+router.get("/:id/preview", previewFile);
 
 export default router;

@@ -43,6 +43,7 @@ export const FilesProvider = ({ children }: { children: React.ReactNode }) => {
         isImportant: file.is_important,
 
         shared: file.visibility === "public",
+        previewUrl:file.previewUrl,
 
         recent:
           Date.now() - new Date(file.updated_at).getTime() <

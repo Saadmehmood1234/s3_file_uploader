@@ -5,6 +5,7 @@ import {
   ApiFile,
   ApiResponse,
   DownloadData,
+  FilePreviewUrl,
   UploadPayload,
   UploadUrlData,
 } from "@/types/file";
@@ -152,6 +153,13 @@ export const fileApi = {
     const response = await api.patch(`/files/${id}/rename`, {
       name,
     });
+
+    return response.data;
+  },
+  getPreviewUrl: async(id: string) => {
+    const response = await api.get<ApiResponse<FilePreviewUrl>>(
+      `/files/${id}/preview`,
+    );
 
     return response.data;
   },

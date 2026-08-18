@@ -17,6 +17,7 @@ import {
   deleteS3Object,
   generateDownloadUrl,
   generateUploadUrl,
+  getFilePreviewUrl,
   verifyObjectExists,
 } from "../services/storage.service.js";
 import ErrorResponse from "../utils/ApiError.js";
@@ -116,7 +117,7 @@ export const updateFileVisibility = asyncHandler(
 export const updateImportantFile = asyncHandler(
   async (req: Request, res: Response) => {
     const { important } = req.body;
-    console.log("important",important)
+    console.log("important", important);
     const file = await updateImportant(
       req.params.id as string,
       req.userId!,
@@ -193,25 +194,51 @@ export const deleteFile = asyncHandler(async (req: Request, res: Response) => {
   });
 });
 
+export const renameFile = asyncHandler(async (req: Request, res: Response) => {
+  const { name } = req.body;
 
-export const renameFile = asyncHandler(
-  async (req: Request, res: Response) => {
-    const { name } = req.body;
+  const file = await renameOwnedFile(
+    req.params.id as string,
+    req.userId!,
+    name,
+  );
 
-    const file = await renameOwnedFile(
-      req.params.id as string,
-      req.userId!,
-      name,
-    );
+  if (!file) {
+    ErrorResponse("File not found", 404);
+  }
 
-    if (!file) {
-      ErrorResponse("File not found", 404);
-    }
+  return res.status(200).json({
+    success: true,
+    message: "File renamed successfully",
+    data: file,
+  });
+});
 
-    return res.status(200).json({
-      success: true,
-      message: "File renamed successfully",
-      data: file,
-    });
-  },
-);
+export const previewFile = asyncHandler(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const userId = req.userId;
+
+  if (!userId) {
+    ErrorResponse("Unauthorized", 401);
+  }
+
+  const file = await findOwnedFile(id as string, userId as string);
+
+  if (!file) {
+    ErrorResponse("File not found", 404);
+  }
+
+  if (file.status !== "uploaded") {
+    ErrorResponse("File is not available for preview", 400);
+  }
+
+  const previewUrl = await getFilePreviewUrl(file.storage_key, file.mime_type);
+
+  return res.status(200).json({
+    success: true,
+    data: {
+      previewUrl,
+      expiresIn: 15 * 60,
+    },
+  });
+});

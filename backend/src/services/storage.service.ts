@@ -67,3 +67,19 @@ export const deleteS3Object = async (
 
   await s3.send(command);
 };
+
+export const getFilePreviewUrl = async (
+  storageKey: string,
+  mimeType?: string,
+): Promise<string> => {
+  const command = new GetObjectCommand({
+    Bucket: env.AWS_S3_BUCKET,
+    Key: storageKey,
+    ResponseContentType: mimeType,
+    ResponseContentDisposition: "inline",
+  });
+
+  return getSignedUrl(s3, command, {
+    expiresIn: 15 * 60,
+  });
+};

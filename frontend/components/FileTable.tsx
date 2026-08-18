@@ -1,28 +1,27 @@
 "use client";
 import { StoredFile } from "@/types/file";
 import {
-  CircleAlert,
-  Download,
   Eye,
   Globe2,
+  Grid2X2,
   Link,
+  List,
   Lock,
   MoreVertical,
-  Pencil,
   Search,
   SlidersHorizontal,
-  Trash2,
 } from "lucide-react";
-import { useMemo, useState } from "react";
+import {  useMemo, useState } from "react";
 import { FileBadge } from "./FileBadge";
 import PrevieFile from "./PreviewFile";
 import { calculateFileSize } from "@/lib/calculateFileSize";
 import { fileApi } from "@/lib/api";
 import { DeleteModal } from "./DeleteModal";
 import { toast } from "sonner";
-import { createPortal } from "react-dom";
 import { formatDate } from "@/lib/formatDate";
 import { RenameModal } from "./RenameModal";
+import FileActionsModal from "./FileActionsModal";
+import { FileCard } from "./FileCard";
 const FileTable = ({
   files,
   title = "Your files",
@@ -36,17 +35,13 @@ const FileTable = ({
   const [size, setSize] = useState("all");
   const [time, setTime] = useState("all");
   const [now] = useState(() => Date.now());
-  const [menu, setMenu] = useState<{
-    id: string;
-    top?: number;
-    bottom?: number;
-    right: number;
-  } | null>(null);
   const [preview, setPreview] = useState<StoredFile | null>(null);
   const [deleteFile, setDeleteFile] = useState<StoredFile | null>(null);
   const [deleting, setDeleting] = useState(false);
   const [renameFile, setRenameFile] = useState<StoredFile | null>(null);
   const [renaming, setRenaming] = useState(false);
+  const [actionFile, setActionFile] = useState<StoredFile | null>(null);
+  const [view, setView] = useState<"table" | "card">("table");
   const visible = useMemo(() => {
     const MB = 1024 * 1024;
     return files
@@ -175,7 +170,6 @@ const FileTable = ({
       link.click();
       document.body.removeChild(link);
 
-      setMenu(null);
       toast.success("Download started.");
     } catch (error: any) {
       toast.error(error.response?.data?.message || "Failed to download file.");
@@ -184,30 +178,6 @@ const FileTable = ({
   const handleCopy = (id: string) => {
     navigator.clipboard?.writeText(`${location.origin}/files/public/${id}`);
     toast.success("Link copied!");
-  };
-  const handleMenuOpen = (
-    e: React.MouseEvent<HTMLButtonElement>,
-    id: string,
-  ) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-
-    const menuHeight = 100;
-    const gap = 6;
-    const viewportPadding = 12;
-
-    let top = rect.bottom + gap;
-
-    const maxTop = window.innerHeight - menuHeight - viewportPadding;
-
-    if (top > maxTop) {
-      top = maxTop;
-    }
-
-    setMenu({
-      id,
-      top,
-      right: window.innerWidth - rect.right,
-    });
   };
 
   const handleRename = async (name: string) => {
@@ -232,6 +202,7 @@ const FileTable = ({
       setRenaming(false);
     }
   };
+
   return (
     <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm shadow-sky-200/40">
       <div className="flex flex-col gap-3 border-b border-slate-100 p-4 sm:flex-row sm:items-center">
@@ -276,197 +247,160 @@ const FileTable = ({
               ["month", "This month"],
             ]}
           />
+          <div className="flex items-center rounded-xl border border-slate-200 bg-slate-50 p-1">
+            <button
+              onClick={() => setView("table")}
+              className={`flex h-8 w-8 items-center justify-center rounded-lg transition ${
+                view === "table"
+                  ? "bg-white text-slate-800 shadow-sm"
+                  : "text-slate-400 hover:text-slate-700"
+              }`}
+              title="Table view"
+              aria-label="Table view"
+            >
+              <List size={17} />
+            </button>
+
+            <button
+              onClick={() => setView("card")}
+              className={`flex h-8 w-8 items-center justify-center rounded-lg transition ${
+                view === "card"
+                  ? "bg-white text-slate-800 shadow-sm"
+                  : "text-slate-400 hover:text-slate-700"
+              }`}
+              title="Card view"
+              aria-label="Card view"
+            >
+              <Grid2X2 size={17} />
+            </button>
+          </div>
         </div>
       </div>
-      <div className="overflow-x-auto">
-        <table className="w-full min-w-200 table-fixed text-left text-sm">
-          <thead className="bg-slate-50/70 text-xs uppercase tracking-wider text-slate-400">
-            <tr>
-              <th className="px-5 py-3.5 font-semibold">Name</th>
-              <th className="px-5 py-3.5 font-semibold">Owner</th>
-              <th className="px-5 py-3.5 font-semibold">Size</th>
-              <th className="px-5 py-3.5 font-semibold">Modified</th>
-              <th className="px-5 py-3.5 font-semibold">Access</th>
-              <th className="px-5 py-3.5 text-center font-semibold">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-slate-400">
-            {visible.map((f) => (
-              <tr key={f.id} className="group hover:bg-slate-50/60">
-                <td className="max-w-0 px-5 py-4">
-                  <button
-                    onClick={() => setPreview(f)}
-                    className="flex w-full min-w-0 items-center gap-3 text-left"
-                  >
-                    <div className="shrink-0">
-                      <FileBadge type={f.type} />
-                    </div>
-
-                    <div className="min-w-0 flex-1">
-                      <p
-                        className="truncate font-semibold text-slate-800"
-                        title={f.name}
-                      >
-                        {f.name}
-                      </p>
-
-                      <p className="mt-0.5 text-xs text-slate-400">{f.type}</p>
-                    </div>
-                  </button>
-                </td>
-                <td className="px-4 py-4 text-slate-500">{f.owner}</td>
-                <td className="px-4 py-4 text-slate-500">
-                  {calculateFileSize(f.size)}
-                </td>
-                <td className="px-4 py-4 text-slate-500">
-                  {formatDate(f.updatedAt)}
-                </td>
-                <td className="px-4 py-4">
-                  <button
-                    className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${f.visibility === "public" ? "bg-emerald-50 text-emerald-700" : "bg-slate-100 text-slate-600"}`}
-                    onClick={() => toggle(f.id, "visibility")}
-                    title={
-                      f.visibility === "public" ? "Make Private" : "Make Public"
-                    }
-                  >
-                    {f.visibility === "public" ? (
-                      <p className="inline-flex gap-1 items-center">
-                        {" "}
-                        <Globe2 size={13} /> public
-                      </p>
-                    ) : (
-                      <p className="inline-flex gap-1 items-center">
-                        {" "}
-                        <Lock size={13} /> private{" "}
-                      </p>
-                    )}
-                  </button>
-                </td>
-                <td className="relative px-5 py-4">
-                  <div className="flex justify-end gap-1">
-                    <button
-                      className="action-button"
-                      onClick={() => setPreview(f)}
-                      aria-label="Preview"
-                      title="View File"
-                    >
-                      <Eye size={18} />
-                    </button>
-                    <button
-                      onClick={() => toggle(f.id, "important")}
-                      className={`action-button ${
-                        f.isImportant ? "text-amber-500" : "text-slate-400"
-                      }`}
-                      aria-label={
-                        f.isImportant
-                          ? "Remove from important"
-                          : "Mark as important"
-                      }
-                      title={
-                        f.isImportant
-                          ? "Remove from important"
-                          : "Mark as important"
-                      }
-                    >
-                      <CircleAlert
-                        size={18}
-                        fill={f.isImportant ? "currentColor" : "none"}
-                      />
-                    </button>
-                    <button
-                      onClick={() => handleCopy(f.id)}
-                      aria-label="Share"
-                      className="action-button"
-                      title="Copy Link"
-                    >
-                      <Link size={18} />
-                    </button>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-
-                        if (menu?.id === f.id) {
-                          setMenu(null);
-                          return;
-                        }
-
-                        handleMenuOpen(e, f.id);
-                      }}
-                      title="Actions"
-                    >
-                      <MoreVertical size={18} />
-                    </button>
-                  </div>
-                  {menu &&
-                    createPortal(
-                      <div
-                        style={{
-                          top: menu.top,
-                          right: menu.right,
-                        }}
-                        className="fixed z-9999 w-40 rounded-xl border border-slate-200 bg-white p-1.5 shadow-2xl"
-                      >
-                        <button
-                          className="menu-button"
-                          onClick={() => {
-                            const file = files.find(
-                              (file) => file.id === menu.id,
-                            );
-
-                            if (!file) return;
-
-                            handleDownload(file);
-                          }}
-                        >
-                          <Download size={18} />
-                          Download
-                        </button>
-                        <button
-                          className="menu-button"
-                          onClick={() => {
-                            const file = files.find(
-                              (file) => file.id === menu.id,
-                            );
-
-                            if (!file) return;
-
-                            setRenameFile(file);
-                            setMenu(null);
-                          }}
-                        >
-                          <Pencil size={18} />
-                          Rename
-                        </button>
-                        <button
-                          onClick={() => {
-                            const file = files.find(
-                              (file) => file.id === menu.id,
-                            );
-
-                            if (!file) return;
-
-                            setDeleteFile(file);
-                            setMenu(null);
-                          }}
-                          className="menu-button text-rose-600"
-                        >
-                          <Trash2 size={18} />
-                          Delete
-                        </button>
-                      </div>,
-                      document.body,
-                    )}
-                </td>
+      {view === "table" && (
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-200 table-fixed text-left text-sm">
+            <thead className="bg-slate-50/70 text-xs uppercase tracking-wider text-slate-400">
+              <tr>
+                <th className="px-5 py-3.5 font-semibold">Name</th>
+                <th className="px-5 py-3.5 font-semibold">Owner</th>
+                <th className="px-5 py-3.5 font-semibold">Size</th>
+                <th className="px-5 py-3.5 font-semibold">Modified</th>
+                <th className="px-5 py-3.5 font-semibold">Access</th>
+                <th className="px-5 py-3.5 text-center font-semibold">
+                  Actions
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-        {visible.length === 0 && (
-          <div className="py-16 text-center text-sm text-slate-400">
-            No files match your filters.
-          </div>
-        )}
-      </div>
+            </thead>
+            <tbody className="divide-y divide-slate-400">
+              {visible.map((f) => (
+                <tr key={f.id} className="group hover:bg-slate-50/60">
+                  <td className="max-w-0 px-5 py-4">
+                    <button
+                      onClick={() => setPreview(f)}
+                      className="flex w-full min-w-0 items-center gap-3 text-left"
+                    >
+                      <div className="shrink-0">
+                        <FileBadge type={f.type} />
+                      </div>
+
+                      <div className="min-w-0 flex-1">
+                        <p
+                          className="truncate font-semibold text-slate-800"
+                          title={f.name}
+                        >
+                          {f.name}
+                        </p>
+
+                        <p className="mt-0.5 text-xs text-slate-400">
+                          {f.type}
+                        </p>
+                      </div>
+                    </button>
+                  </td>
+                  <td className="px-4 py-4 text-slate-500">{f.owner}</td>
+                  <td className="px-4 py-4 text-slate-500">
+                    {calculateFileSize(f.size)}
+                  </td>
+                  <td className="px-4 py-4 text-slate-500">
+                    {formatDate(f.updatedAt)}
+                  </td>
+                  <td className="px-4 py-4">
+                    <button
+                      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${f.visibility === "public" ? "bg-emerald-50 text-emerald-700" : "bg-slate-100 text-slate-600"}`}
+                      onClick={() => toggle(f.id, "visibility")}
+                      title={
+                        f.visibility === "public"
+                          ? "Make Private"
+                          : "Make Public"
+                      }
+                    >
+                      {f.visibility === "public" ? (
+                        <p className="inline-flex gap-1 items-center">
+                          {" "}
+                          <Globe2 size={13} /> public
+                        </p>
+                      ) : (
+                        <p className="inline-flex gap-1 items-center">
+                          {" "}
+                          <Lock size={13} /> private{" "}
+                        </p>
+                      )}
+                    </button>
+                  </td>
+                  <td className="relative px-5 py-4">
+                    <td className="px-5 py-4">
+                      <div className="flex items-center justify-end gap-1">
+                        <button
+                          className="action-button"
+                          onClick={() => setPreview(f)}
+                          aria-label="Preview"
+                          title="Preview"
+                        >
+                          <Eye size={18} />
+                        </button>
+                        <button
+                          onClick={() => handleCopy(f.id)}
+                          aria-label="Share"
+                          className="action-button"
+                          title="Copy Link"
+                        >
+                          <Link size={18} />
+                        </button>
+
+                        <button
+                          className="action-button"
+                          onClick={() => setActionFile(f)}
+                          aria-label="More actions"
+                          title="More actions"
+                        >
+                          <MoreVertical size={18} />
+                        </button>
+                      </div>
+                    </td>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          {visible.length === 0 && (
+            <div className="py-16 text-center text-sm text-slate-400">
+              No files match your filters.
+            </div>
+          )}
+        </div>
+      )}
+      {view === "card" && (
+        <div className="grid grid-cols-1 gap-4 p-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {visible.map((file) => (
+            <FileCard
+              key={file.id}
+              file={file}
+              onPreview={() => setPreview(file)}
+              onMore={() => setActionFile(file)}
+            />
+          ))}
+        </div>
+      )}
       {preview && <PrevieFile file={preview} close={() => setPreview(null)} />}
       <DeleteModal
         open={!!deleteFile}
@@ -482,6 +416,38 @@ const FileTable = ({
         loading={renaming}
         onClose={() => setRenameFile(null)}
         onRename={handleRename}
+      />
+      <FileActionsModal
+        file={actionFile}
+        onClose={() => setActionFile(null)}
+        onPreview={(file) => {
+          setPreview(file);
+          setActionFile(null);
+        }}
+        onDownload={(file) => {
+          handleDownload(file);
+          setActionFile(null);
+        }}
+        onRename={(file) => {
+          setRenameFile(file);
+          setActionFile(null);
+        }}
+        onToggleImportant={(file) => {
+          toggle(file.id, "important");
+          setActionFile(null);
+        }}
+        onToggleVisibility={(file) => {
+          toggle(file.id, "visibility");
+          setActionFile(null);
+        }}
+        onCopyLink={(file) => {
+          handleCopy(file.id);
+          setActionFile(null);
+        }}
+        onDelete={(file) => {
+          setDeleteFile(file);
+          setActionFile(null);
+        }}
       />
     </section>
   );
@@ -521,3 +487,5 @@ function Select({
     </label>
   );
 }
+
+
